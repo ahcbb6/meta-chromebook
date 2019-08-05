@@ -9,7 +9,8 @@
 DEFAULTTUNE ?= "coreix-64-skylake"
 
 # Include the previous tune to pull in PACKAGE_EXTRA_ARCHS
-require conf/machine/include/tune-corei7.inc # tunei7 includes tune core2
+# tune i7 include tune core2
+require conf/machine/include/tune-corei7.inc
 
 # Extra tune features
 TUNEVALID[skylake] = "Enable corei7 specific processor optimizations"
