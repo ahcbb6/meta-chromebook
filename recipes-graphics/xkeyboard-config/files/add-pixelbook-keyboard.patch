@@ -1,0 +1,82 @@
+Index: xkeyboard-config-2.27/symbols/inet
+===================================================================
+--- xkeyboard-config-2.27.orig/symbols/inet
++++ xkeyboard-config-2.27/symbols/inet
+@@ -1880,6 +1880,7 @@ xkb_symbols "htcdream" {
+ 	modifier_map Shift { <LFSH>, <RTSH> };
+ };
+ 
++// Generic Chromebook
+ partial alphanumeric_keys
+ xkb_symbols "chromebook" {
+ 	include "level3(ralt_switch)"
+@@ -1901,6 +1902,29 @@ xkb_symbols "chromebook" {
+         key <LWIN> {    [ Super_L, Super_L, Caps_Lock, Super_L ] };
+ };
+ 
++// Pixelbook (Chromebook-Eve)
++partial alphanumeric_keys
++xkb_symbols "pixelbook-eve" {
++	include "level3(lwin_switch)"
++        key <FK01> {    [ F1, XF86Back ] };
++        key <FK02> {    [ F2, XF86Reload ] };
++        key <FK03> {    [ F3, XF86Terminal ] };
++        key <FK04> {    [ F4, XF86RotateWindows ] };
++        key <FK05> {    [ F5, XF86MonBrightnessDown ] };
++        key <FK06> {    [ F6, XF86MonBrightnessUp ] };
++        key <FK07> {    [ F7, XF86AudioMedia ] };
++        key <FK08> {    [ F8, XF86AudioMute ] };
++        key <FK09> {    [ F9, XF86AudioLowerVolume ] };
++        key <FK10> {    [ F10, XF86AudioRaiseVolume ] };
++        key <FK11> {    [ F11, XF86Tools ] };
++        key <TAB> {    [ Tab, Caps_Lock, Caps_Lock ] };
++        key <BKSP> {    [ BackSpace, BackSpace, Delete ] };
++        key <UP>   {    [ Up, Up, Prior, Up ] };
++        key <DOWN> {    [ Down, Down, Next, Down ] };
++        key <LEFT> {    [ Left, Left, Home, Left ] };
++        key <RGHT> {    [ Right, Right, End, Right ] };
++};
++
+ partial alphanumeric_keys
+ xkb_symbols "teck227" {
+     include "inet(media_nav_common)"
+Index: xkeyboard-config-2.27/rules/evdev.xml
+===================================================================
+--- xkeyboard-config-2.27.orig/rules/evdev.xml
++++ xkeyboard-config-2.27/rules/evdev.xml
+@@ -1325,6 +1325,13 @@
+     </model>
+     <model>
+       <configItem>
++       <name>pixelbook-eve</name>
++       <description>Pixelbook (Chromebook EVE)</description>
++       <vendor>Google</vendor>
++     </configItem>
++    </model>
++    <model>
++      <configItem>
+        <name>teck227</name>
+        <description>Truly Ergonomic Computer Keyboard Model 227 (Wide Alt keys)</description>
+        <vendor>Megawin Technology</vendor>
+Index: xkeyboard-config-2.27/rules/base.m_s.part
+===================================================================
+--- xkeyboard-config-2.27.orig/rules/base.m_s.part
++++ xkeyboard-config-2.27/rules/base.m_s.part
+@@ -36,6 +36,7 @@
+   ltcd          =       +inet(logicda)
+   microsoftccurve2k =   +inet(microsoftprooem)
+   microsoftpro  =       +inet(media_nav_acpi_common)
++  pixelbook-eve =       +inet(pixelbook-eve)
+   precision_m   =       +inet(media_nav_common)
+   scorpius      =       +inet(media_nav_acpi_common)
+   sp_inet       =       +inet(media_nav_acpi_common)
+Index: xkeyboard-config-2.27/rules/evdev.m_s.part
+===================================================================
+--- xkeyboard-config-2.27.orig/rules/evdev.m_s.part
++++ xkeyboard-config-2.27/rules/evdev.m_s.part
+@@ -1,4 +1,5 @@
+   $evdevkbds    =   +inet(evdev)+inet(%m)
+   chromebook    =   +inet(evdev)+inet(chromebook)
++  pixelbook-eve =   +inet(evdev)+inet(pixelbook-eve)
+   applealu_jis  =   +inet(evdev)+macintosh_vndr/jp(alujiskeys)
+   *             =   +inet(evdev)
