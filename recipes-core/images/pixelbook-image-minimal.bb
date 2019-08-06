@@ -3,9 +3,7 @@ DESCRIPTION = "A small image just capable of allowing the pixelbook to boot to c
 IMAGE_INSTALL = "packagegroup-core-boot ${CORE_IMAGE_EXTRA_INSTALL}"
 
 # Console Utils
-# Todo for blind people terminus-consolefonts maybe
-# Get Pixelbook keyboard working on console
-IMAGE_INSTALL_append = " kbd kbd-keymaps terminus-font-consolefonts"
+IMAGE_INSTALL_append = " chromebook-console-keymap kbd kbd-keymaps terminus-font-consolefonts ncurses bash"
 
 # Network Utils
 IMAGE_INSTALL_append = " dhcp-client iw iproute2 wpa-supplicant connman connman-client"
@@ -25,3 +23,16 @@ IMAGE_ROOTFS_SIZE ?= "8192"
 
 EXTRA_IMAGE_FEATURES_append = " ssh-server-openssh"
 
+# We want another user to be created, the same user for both
+# minimal and xfce images, and its easier to wire it in
+# through the xuser-account recipe, to be able to launch
+# launch Xorg from a non-root user, so instead of creating
+# our own user here just install the xuser-account on the
+# minimal image as well, AFAIC there should be no repercusions.
+
+inherit extrausers
+EXTRA_USERS_PARAMS = "\
+    usermod -a -G sudo pixelpoky; \
+"
+
+IMAGE_INSTALL_append = " sudo xuser-account"
