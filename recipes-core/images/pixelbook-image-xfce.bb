@@ -2,29 +2,40 @@ DESCRIPTION = "A full image capable of allowing the pixelbook to boot using a gr
 
 require pixelbook-image-minimal.bb
 
+# Command Utils
+IMAGE_INSTALL_append = " bash-completion util-linux-fdisk util-linux-resizepart procps"
+
 # Network Utils
-IMAGE_INSTALL_append = " bind git nmap mosh curl"
+IMAGE_INSTALL_append = " bind git nmap mosh curl netcat tcpdump traceroute"
 
 # HW Utils
 IMAGE_INSTALL_append = " usbutils util-linux-lsblk util-linux-dmesg kmod udev-extraconf hwdata lshw"
 
 # Misc Utils:
-IMAGE_INSTALL_append = " python3 vim grep bash htop tmux"
+IMAGE_INSTALL_append = " python3 python3-pip vim grep htop tmux"
 
 # XFCE:
-IMAGE_INSTALL_append = " packagegroup-core-x11 packagegroup-xfce-base mousepad xfce4-appfinder epiphany"
+IMAGE_INSTALL_append = " packagegroup-core-x11 packagegroup-xfce-base mousepad xfce4-appfinder xfce4-battery-plugin xfce4-netload-plugin xfce4-wavelan-plugin "
+
+# EXTRA GUI Stuff
+IMAGE_INSTALL_append = " gparted epiphany"
+# evince requires gnome-desktop?
+# ristretto require poppler, poppler does not play nice with Gobject-introspection
 
 DISTRO_FEATURES_append = " x11"
 
 # Input
 IMAGE_INSTALL_append = " xf86-input-libinput libinput setxkbmap xkeyboard-config"
-# Debug install xev
+
+# To debug install xev
+
 # TODO is it better to use synaptics for touchpad?
 # xf86-input-synaptics
 
 
 # Solve XFCE bug for now
-IMAGE_INSTALL_append = " xfwm4-config-rm"
+# It seems that this only happens when starting X as root
+# IMAGE_INSTALL_append = " xfwm4-config-rm"
 
 
 # Could probably install kernel-modules here and call it a day
