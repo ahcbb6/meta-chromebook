@@ -1,7 +1,16 @@
-# Settings for the GCC(1) cpu-type "skylake":
+#     Based on corei7-64 from meta-intel (Nehalem).
 #
-#     Intel Skylake CPU with 64-bit extensions, MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1,
-#     SSE4.2 and POPCNT instruction set support.
+#     Settings for the GCC(1) cpu-type "skylake":
+#
+#     Intel Skylake CPU with 64-bit extensions:
+#     MOVBE, MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1,
+#     SSE4.2, POPCNT, AES, PCLMUL, FSGSBASE, RDRND,
+#     FMA, BMI, BMI2, F16C, RDSEED, ADCX, PREFETCHW,
+#     CLFLUSHOPT, XSAVEC and XSAVES [1].
+#     (Everything from the Skylake tune minus AVX)
+#     [1] https://gcc.gnu.org/onlinedocs/gcc/x86-Options.html
+#
+#     The AVX instruction set is not supported on QEMU X86-64 (at this point).
 #
 # This tune is recommended for Intel Skylake architectures (and beyond).
 #
@@ -14,11 +23,9 @@ require conf/machine/include/tune-corei7.inc
 
 # Extra tune features
 TUNEVALID[skylake] = "Enable corei7 specific processor optimizations"
-TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'skylake', ' -march=skylake -mtune=skylake -mfpmath=sse -msse4.2', '', d)}"
-
+TUNE_CCARGS .= "${@bb.utils.contains('TUNE_FEATURES', 'skylake', ' -march=skylake -mtune=skylake -mfpmath=sse -msse4.2 ${QEMU_UNAVAILABLE_TUNES}', '', d)}"
 
 # Only support 64 bit at this point
-
 
 # Extra tune selections
 # AVAILTUNES += "corei7-32"
@@ -43,3 +50,29 @@ QEMU_EXTRAOPTIONS_coreix-64-skylake = " -cpu Skylake-Client,check=false"
 # TUNE_PKGARCH_tune-corei7-64-x32 = "corei7-64-x32"
 # PACKAGE_EXTRA_ARCHS_tune-corei7-64-x32 = "${PACKAGE_EXTRA_ARCHS_tune-core2-64-x32} corei7-64-x32"
 # QEMU_EXTRAOPTIONS_corei7-64-x32 = " -cpu Skylake,check=false"
+
+
+
+# The following had to be disabled due to the lack of support of AVX
+# instructions from QEMU, QEMU is used whilst cross compiling for
+# Gobject data introspetion and is also required by Chromium.
+#
+# Running a SKylake-Client QEMU allows us to get the unsupported instructions:
+# gcc -march=native -E -v - </dev/null 2>&1 | grep cc1 under qemu -cpu Skylake-Client
+
+QEMU_UNAVAILABLE_TUNES = " \
+-mno-avx \
+-mno-avx2 \
+-mno-avx512f \
+-mno-avx512er \
+-mno-avx512cd \
+-mno-avx512pf \
+-mno-avx512dq \
+-mno-avx512bw \
+-mno-avx512vl \
+-mno-avx512ifma \
+-mno-avx512vbmi \
+-mno-avx512vbmi2 \
+-mno-avx512vnni \
+-mno-avx512bitalg \
+"
