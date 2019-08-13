@@ -40,5 +40,4 @@ IMAGE_INSTALL_append = " xf86-input-libinput libinput setxkbmap xkeyboard-config
 
 # Could probably install kernel-modules here and call it a day
 
-# Yet to be tested
-#EXTRA_IMAGE_FEATURES += "package-management"
+EXTRA_IMAGE_FEATURES += "package-management"
