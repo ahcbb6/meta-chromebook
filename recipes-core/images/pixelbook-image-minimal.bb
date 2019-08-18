@@ -9,7 +9,7 @@ IMAGE_INSTALL_append = " chromebook-console-keymap kbd kbd-keymaps terminus-font
 IMAGE_INSTALL_append = " dhcp-client iw iproute2 wpa-supplicant connman connman-client"
 
 # HW Utils
-IMAGE_INSTALL_append = " pciutils util-linux-lsblk util-linux-libuuid util-linux-lscpu util-linux-sfdisk util-linux-uuidd util-linux-uuidgen util-linux-uuidparse e2fsprogs-resize2fs coreutils"
+IMAGE_INSTALL_append = " pciutils util-linux-lsblk util-linux-libuuid util-linux-lscpu util-linux-sfdisk util-linux-uuidd util-linux-uuidgen util-linux-uuidparse e2fsprogs-resize2fs coreutils mrchromebox-fw-utils"
 
 # Add more locales?
 IMAGE_LINGUAS = "en-us"
