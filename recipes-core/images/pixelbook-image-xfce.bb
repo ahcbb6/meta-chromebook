@@ -18,9 +18,7 @@ IMAGE_INSTALL_append = " python3 python3-pip vim grep htop tmux"
 IMAGE_INSTALL_append = " packagegroup-core-x11 packagegroup-xfce-base gedit xfce4-appfinder xfce4-battery-plugin xfce4-netload-plugin xfce4-wavelan-plugin gvfs gvfsd-trash"
 
 # EXTRA GUI Stuff
-IMAGE_INSTALL_append = " gparted chromium-x11"
-# evince requires gnome-desktop?
-# ristretto require poppler, poppler does not play nice with Gobject-introspection
+IMAGE_INSTALL_append = " gparted chromium-x11 ristretto"
 
 DISTRO_FEATURES_append = " x11"
 
