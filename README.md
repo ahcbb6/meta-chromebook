@@ -1,20 +1,78 @@
-This README file contains information on the contents of the meta-pixelbook layer.
+## Chromebook BSP layer for OpenEmbedded/Yocto
+========================================================================
 
-This layer allows you to build a Linux distribution for the Pixelbook (Chromebook EVE)
+Chromebooks are widely used nowadays, providing quality hardware mostly
+used for lightweight workloads.
+
+While ChromeOS provides many interesting capabilities, it simply does not
+match a Linux Operating System when it comes to be used as a dev environment.
+
+This layer allows you to build a Linux distribution for Chromebook devices
 using the OpenEmbedded Infrastructure.
 
-There is no reason why this can't be expanded to work on other chromebooks,
-the Chromebook EVE is simply the hardware I have available to test at this point.
-
+(It is a bit tuned/tweaked for the Pixelbook (Chromebook EVE)).
 
 Please see the corresponding sections below for details.
 
-Dependencies
-============
+
+Table of Contents
+=============================================
+
+### [I. What is this layer for?](https://github.com/aehs29/meta-chromebook/tree/master#i-what-is-this-layer-for)
+### [II. Layer Dependencies](https://github.com/aehs29/meta-chromebook/tree/master#ii-dependencies)
+### [III. Usage](https://github.com/aehs29/meta-chromebook/tree/master#iii-usage)
+### [IV. Submitting Patches](https://github.com/aehs29/meta-chromebook/tree/master#iv-submitting-patches)
+
+
+
+I. What is this layer for?
+=============================================
+
+This layer allows users to build a customized Linux Distribution
+for Chromebook devices.
+
+The layer contains MACHINEs (BSPs) for:
+* **X86 based Chromebooks**
+* **ARM64 based Chromebooks**
+* **Pixelbook (EVE)**
+   * A specific tune for Skylake devices is added since the tune coming
+   from meta-intel uses a very old TUNE at this point (Nehalem).
+
+Specific Chromebook recipes for:
+* **flashrom**
+* **gbb_utility**
+* **rootdev**
+* **crossystem**
+* **cbfstool**
+* **Seabios (MrChromeBox)**
+* **MrChromeBox Firmware Utility Scripts**
+
+**Kernel:**
+ - Images work properly on both **linux-yocto** and **linux-intel**, and are updated
+ to their latest version.
+
+**Images:**
+* **chromebook-image-minimal:** Console image with network and firmware update capabilities
+* **chromebook-image-xfce:** A full image, capable to boot using a graphics environment (XFCE),
+   by definition it contains more cmdline utilities, network utilities, and it meant to be
+   used mostly as a dev environment, it also contains python, vim and obviously CHROMIUM.
+
+Tweaks:
+ - An extra user is used on both images (chronospoky)
+ - Keymaps: a keymap is provided both for console en X11 to be used on Chromebooks
+   * xkeyboard-config already provides a chromebook model, but cant be used without X11
+   * A chromebook keymap is provided to be used on the console without X11
+   * A pixelbook-eve keymap model is added to the xkeyboard-config to allow thep pixelbook
+     keyboard to work properly, since its keyboard is a little different than most chromebooks.
+ - Touchpad: libinput is used for both the touchpad and touchscreen devices, a few
+   customizations are added both for Chromebooks in general and the Pixelbook
+
+
+II. Dependencies
+=============================================
 
         OE-core (meta)
         meta-poky
-        meta-yocto-bsp
         meta-intel
         meta-oe
         meta-multimedia
@@ -23,21 +81,45 @@ Dependencies
         meta-networking
         meta-xfce
         meta-browser
+        meta-clang
 
-Patches
-=======
 
-Please submit any patches against the meta-pixelbook layer to the github repo https://github.com/aehs29/meta-pixelbook
+III. Usage
+=============================================
+
+Assumptions:
+- All the layers mentioned above have been cloned already
+
+Source the OE environment
+ ```bash
+$ source oe-init-build-env
+ ```
+Run 'bitbake-layers add-layer meta-chromebook' (This process is repeated for each of the above layers)
+```bash
+$ bitbake-layers add-layer meta-chromebook
+ ```
+Create an image (e.g.)
+```bash
+$ MACHINE=eve-chromebook bitbake chromebook-image-xfce
+ ```
+or
+```bash
+$ MACHINE=x86-chromebook bitbake chromebook-image-minimal
+ ```
+Flash the image to a storage device
+```bash
+dd if=tmp/deploy/images/eve-chromebook/pixelbook-image-xfce-eve-chromebook.wic of=/dev/<your-dev>
+ ```
+Boot from USB (it is assumed the BIOS has been flashed to allow legacy boot), for more information
+on upgrading Coreboot or SeaBIOS please see: https://mrchromebox.tech/#chromeos
+
+
+Seabios can be built from source as well from this layer and installed via an RPM, which will install
+it on /usr/share/firmware/ and the necessary tools to flash it are also provided (flashrom).
+
+
+IV. Submitting Patches
+=============================================
+
+Please submit any patches against the meta-chromebook layer to the github repo https://github.com/aehs29/meta-chromebook
 and cc: the maintainer: aehs29 at gmail
-
-Table of Contents
-=================
-
-  I. Adding the meta-pixelbook layer to your build
- II. Misc
-
-
-I. Adding the meta-pixelbook layer to your build
-=================================================
-
-Run 'bitbake-layers add-layer meta-pixelbook'
