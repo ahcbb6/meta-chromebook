@@ -4,11 +4,6 @@ LICENSE = "LGPLv3"
 SECTION = "firmware"
 
 SRC_URI = " \
-    https://github.com/qemu/seabios/archive/rel-${PV}.tar.gz \
-    file://hostcc.patch \
-    "
-
-SRC_URI = " \
     git://github.com/MrChromebox/SeaBIOS.git;branch=master;protocol=https \
     file://hostcc.patch \
 "
@@ -42,7 +37,7 @@ do_compile() {
     oe_runmake EXTRAVERSION=-${BIOSNAME}-`date +"%Y.%m.%d"`
 }
 
-BIOSNAME="PhantomGhOSt-MrChromebox-SeaBIOS-kbl"
+BIOSNAME="Poky-MrChromebox-SeaBIOS-kbl"
 
 do_compile_append (){
 
