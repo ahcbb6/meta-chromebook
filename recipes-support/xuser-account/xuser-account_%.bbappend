@@ -1,6 +1,6 @@
 # Dont call our user xuser
 
-XUSER ?= "pixelpoky"
+XUSER ?= "chronospoky"
 
 # xuser recipe uses useradd vs adduser,which requires the password to be encrypted
 USERADD_PARAM_${PN} = "--create-home \

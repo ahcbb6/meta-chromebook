@@ -1,6 +1,6 @@
 # I don't like using the xuser user, I want to user my own
 # but still wire it in through the xuser-account recipe (with some changes)
-XUSER ?= "pixelpoky"
+XUSER ?= "chronospoky"
 
 do_install (){
     install -d ${D}${sysconfdir}/default

@@ -32,7 +32,7 @@ EXTRA_IMAGE_FEATURES_append = " ssh-server-openssh"
 
 inherit extrausers
 EXTRA_USERS_PARAMS = "\
-    usermod -a -G sudo pixelpoky; \
+    usermod -a -G sudo chronospoky; \
 "
 
 IMAGE_INSTALL_append = " sudo xuser-account"
