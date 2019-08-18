@@ -1,0 +1,5 @@
+[Touchpad pressure override]
+MatchUdevType=touchpad
+MatchName=*ACPI0C50:00*
+MatchDMIModalias=dmi:*bvrGoogle_Eve.*
+AttrPressureRange=10:8

@@ -14,6 +14,7 @@ do_install_append (){
 
 # Pixelbook Specific (relies on patch to xkeyboard-config)
 SRC_URI_append_eve-chromebook = " \
+    file://local-overrides.quirks \
     file://90-pixelbook-keyboard.conf \
     file://99-pixelbook-touchpad-tweaks.conf \
 "
@@ -22,5 +23,6 @@ do_install_append_eve-chromebook (){
     rm ${D}/${datadir}/X11/xorg.conf.d/90-chromebook-keyboard.conf
     install -m 644 ${WORKDIR}/90-pixelbook-keyboard.conf ${D}/${datadir}/X11/xorg.conf.d/90-pixelbook-keyboard.conf
     install -m 644 ${WORKDIR}/99-pixelbook-touchpad-tweaks.conf ${D}/${datadir}/X11/xorg.conf.d/99-pixelbook-touchpad-tweaks.conf
+    install -d ${D}${sysconfdir}/libinput/
+    install -m 644 ${WORKDIR}/local-overrides.quirks ${D}${sysconfdir}/libinput/local-overrides.quirks
 }
-
