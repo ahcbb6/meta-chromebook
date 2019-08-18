@@ -29,4 +29,16 @@ SRC_URI = "git://git.yoctoproject.org/linux-yocto.git;name=machine;branch=${KBRA
            git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${KMETA_BRANCH};destsuffix=${KMETA}"
 
 
-SRC_URI_append = " file://extra_pixelbook.cfg"
+
+
+SRC_URI_append_x86-chromebook = " file://defconfig"
+
+KBRANCH_arm64-chromebook  = "v5.2/standard/qemuarm64"
+KMACHINE_arm64-chromebook ?= "qemuarm64"
+SRCREV_arm64-chromebook ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
+
+COMPATIBLE_MACHINE_arm64-chromebook = "arm64-chromebook"
+
+LINUX_VERSION_arm64-chromebook = "5.2.8"
+SRCREV_machine_arm64-chromebook ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
+SRCREV_meta_arm64-chromebook ?= "4d9e181cd82c067e10f4a70e4bae93df66bacb62"
