@@ -10,3 +10,6 @@ USERADD_PARAM_${PN} = "--create-home \
 do_install_append(){
     sed -i 's/xuser/${XUSER}/' ${D}${sysconfdir}/dbus-1/system.d/system-xuser.conf
 }
+
+
+DEPENDS = "openssl-native"
