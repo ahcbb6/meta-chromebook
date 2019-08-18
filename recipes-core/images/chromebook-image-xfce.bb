@@ -1,6 +1,6 @@
 DESCRIPTION = "A full image capable of allowing the pixelbook to boot using a graphics environment, adding more mis utilities in the process"
 
-require pixelbook-image-minimal.bb
+require chromebook-image-minimal.bb
 
 # Command Utils
 IMAGE_INSTALL_append = " bash-completion util-linux-fdisk util-linux-resizepart procps"
