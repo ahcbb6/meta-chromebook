@@ -2,6 +2,8 @@ DESCRIPTION = "A full image capable of allowing the pixelbook to boot using a gr
 
 require chromebook-image-minimal.bb
 
+CHROMEBOOK_NETMANAGER = "networkmanager networkmanager-openvpn network-manager-applet"
+
 # Command Utils
 IMAGE_INSTALL_append = " bash-completion util-linux-fdisk util-linux-resizepart procps"
 
