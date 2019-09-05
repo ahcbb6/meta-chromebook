@@ -11,7 +11,7 @@ IMAGE_INSTALL_append = " bash-completion util-linux-fdisk util-linux-resizepart 
 IMAGE_INSTALL_append = " bind git nmap mosh curl netcat tcpdump traceroute"
 
 # HW Utils
-IMAGE_INSTALL_append = " usbutils util-linux-lsblk util-linux-dmesg kmod udev-extraconf hwdata lshw"
+IMAGE_INSTALL_append = " usbutils util-linux-lsblk util-linux-dmesg kmod udev-extraconf hwdata lshw cryptsetup lvm2"
 
 # Misc Utils:
 IMAGE_INSTALL_append = " python3 python3-pip vim grep htop tmux"
