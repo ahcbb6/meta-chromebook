@@ -1,18 +1,20 @@
 DESCRIPTION = "MrChromeBox Scripts: Scripts for setup/install/firmware update for ChromeOS devices"
 HOMEPAGE = "https://mrchromebox.tech/#fwscript"
 # MrChromebox doesnt specify a license
-LICENSE = "CLOSED"
+LICENSE = "Unlicense-mrchromebox"
 SECTION = "firmware"
+
+NO_GENERIC_LICENSE[Unlicense-mrchromebox] = "LICENSE"
 
 SRC_URI = " \
     git://github.com/MrChromebox/scripts.git;branch=master;protocol=https \
     file://avoid_network_fetch.patch \
 "
-SRCREV = "836ac87ecc8c1dca6fc24650352a5c047f7fe570"
+SRCREV = "2a23b36457e27c203cb661df001eb40f3997139e"
 
 S = "${WORKDIR}/git"
 
-LIC_FILES_CHKSUM = "file://README.md;md5=c1e4dcae02399a68d7684799fca8e60e"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=911690f51af322440237a253d695d19f"
 
 do_install() {
     install -d ${D}/opt/fw_scripts/
