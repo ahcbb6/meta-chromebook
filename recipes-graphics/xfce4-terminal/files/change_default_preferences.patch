@@ -1,0 +1,22 @@
+Index: xfce4-terminal-0.8.8/terminal/terminal-preferences.c
+===================================================================
+--- xfce4-terminal-0.8.8.orig/terminal/terminal-preferences.c
++++ xfce4-terminal-0.8.8/terminal/terminal-preferences.c
+@@ -1007,7 +1007,7 @@ terminal_preferences_class_init (Termina
+       g_param_spec_boolean ("misc-copy-on-select",
+                             NULL,
+                             "MiscCopyOnSelect",
+-                            FALSE,
++                            TRUE,
+                             G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+ 
+   /**
+@@ -1162,7 +1162,7 @@ terminal_preferences_class_init (Termina
+       g_param_spec_boolean ("shortcuts-no-mnemonics",
+                             NULL,
+                             "ShortcutsNoMnemonics",
+-                            FALSE,
++                            TRUE,
+                             G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+ 
+   /**
