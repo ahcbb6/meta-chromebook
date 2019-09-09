@@ -1,0 +1,41 @@
+Index: libxfce4ui-4.14.1/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
+===================================================================
+--- libxfce4ui-4.14.1.orig/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
++++ libxfce4ui-4.14.1/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
+@@ -3,22 +3,22 @@
+ <channel name="xfce4-keyboard-shortcuts" version="1.0">
+   <property name="commands" type="empty">
+     <property name="default" type="empty">
+-      <property name="&lt;Alt&gt;F1" type="string" value="xfce4-popup-applicationsmenu"/>
+       <property name="&lt;Alt&gt;F2" type="string" value="xfce4-appfinder --collapsed">
+         <property name="startup-notify" type="bool" value="true"/>
+       </property>
+-      <property name="&lt;Alt&gt;F3" type="string" value="xfce4-appfinder">
++      <property name="Tools" type="string" value="xfce4-appfinder">
+         <property name="startup-notify" type="bool" value="true"/>
+       </property>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xflock4"/>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;l" type="string" value="xflock4"/>
+-      <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string" value="exo-open --launch TerminalEmulator"/>
+-      <property name="XF86Display" type="string" value="xfce4-display-settings --minimal"/>
+-      <property name="&lt;Super&gt;p" type="string" value="xfce4-display-settings --minimal"/>
++      <property name="Terminal" type="string" value="exo-open --launch TerminalEmulator"/>
++      <property name="Display" type="string" value="xfce4-display-settings --minimal"/>
+       <property name="&lt;Primary&gt;Escape" type="string" value="xfdesktop --menu"/>
+       <property name="XF86WWW" type="string" value="exo-open --launch WebBrowser"/>
+       <property name="XF86Mail" type="string" value="exo-open --launch MailReader"/>
+       <property name="Print" type="string" value="xfce4-screenshooter"/>
++      <property name="MonBrightnessDown" type="string" value="chromebook-kbd-brightness down"/>
++      <property name="MonBrightnessUp" type="string" value="chromebook-kbd-brightness up"/>
+     </property>
+   </property>
+   <property name="xfwm4" type="empty">
+@@ -75,6 +75,8 @@
+       <property name="&lt;Primary&gt;F10" type="string" value="workspace_10_key"/>
+       <property name="&lt;Primary&gt;F11" type="string" value="workspace_11_key"/>
+       <property name="&lt;Primary&gt;F12" type="string" value="workspace_12_key"/>
++      <property name="&lt;Alt&gt;Left" type="string" value="tile_left_key"/>
++      <property name="&lt;Alt&gt;Right" type="string" value="tile_right_key"/>
+     </property>
+   </property>
+   <property name="providers" type="array">
