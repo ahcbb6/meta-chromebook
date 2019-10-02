@@ -1,44 +1,38 @@
-# Base our linux-yocto on the coreix-64-skylake-intel-common MACHINE from meta-yocto-bsp
+# See README.kernel.config for details on how the kernel configuration is built
 
-KBRANCH_coreix-64-skylake-intel-common  = "v5.2/standard/base"
-KMACHINE_coreix-64-skylake-intel-common ?= "common-pc-64"
-SRCREV_machine_coreix-64-skylake-intel-common ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
-
-COMPATIBLE_MACHINE_coreix-64-skylake-intel-common = "coreix-64-skylake-intel-common"
-
-LINUX_VERSION_coreix-64-skylake-intel-common = "5.2.8"
-
-
-SRCREV_machine_eve-chromebook ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
-SRCREV_meta_eve-chromebook ?= "4d9e181cd82c067e10f4a70e4bae93df66bacb62"
-
-# At this point we need to use linux-intel config (sadly), just because we know
-# it provides the necessary configs analyzing this furhter would allow us to
-# base our config on genericx86-64, but at least this allows us to keep up with
-# newer kernel versions coming from linux-yocto, e.g. as of today 4.19 vs 5.0.13
-
-# Add some extra stuff (mainly graphics due to graphics and HID)
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
-SRC_URI_append_eve-chromebook = " file://defconfig \
-    file://extra_pixelbook.cfg \
-"
+KMACHINE_eve-chromebook = "intel-corei7-64"
+COMPATIBLE_MACHINE_eve-chromebook = "eve-chromebook"
 
-KMETA_BRANCH ?= "yocto-5.2"
-SRC_URI = "git://git.yoctoproject.org/linux-yocto.git;name=machine;branch=${KBRANCH}; \
-           git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=${KMETA_BRANCH};destsuffix=${KMETA}"
+KMACHINE_x86-chromebook = "intel-corei7-64"
+COMPATIBLE_MACHINE_x86-chromebook = "x86-chromebook"
 
-
-
-
-SRC_URI_append_x86-chromebook = " file://defconfig"
-
-KBRANCH_arm64-chromebook  = "v5.2/standard/qemuarm64"
 KMACHINE_arm64-chromebook ?= "qemuarm64"
-SRCREV_arm64-chromebook ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
-
 COMPATIBLE_MACHINE_arm64-chromebook = "arm64-chromebook"
 
-LINUX_VERSION_arm64-chromebook = "5.2.8"
+
+SRCREV_machine_eve-chromebook ?= "25b14cdf9659c68ab32d66616dfdbbe2ece3fd94"
+SRCREV_meta_eve-chromebook ?= "56f5bc749e5a8e40b55a3819288ac277813ec5ef"
+KBRANCH_eve-chromebook  = "v5.2/standard/base"
+LINUX_VERSION_eve-chromebook = "5.2.17"
+
+SRCREV_machine_x86-chromebook ?= "25b14cdf9659c68ab32d66616dfdbbe2ece3fd94"
+SRCREV_meta_x86-chromebook ?= "56f5bc749e5a8e40b55a3819288ac277813ec5ef"
+KBRANCH_x86-chromebook  = "v5.2/standard/base"
+LINUX_VERSION_x86-chromebook = "5.2.17"
+
+
 SRCREV_machine_arm64-chromebook ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
 SRCREV_meta_arm64-chromebook ?= "4d9e181cd82c067e10f4a70e4bae93df66bacb62"
+KBRANCH_arm64-chromebook  = "v5.2/standard/qemuarm64"
+LINUX_VERSION_arm64-chromebook = "5.2.8"
+
+
+SRC_URI_append_eve-chromebook = " file://chromium-x86-64-defconfig-R77-4.19-no-chromium.cfg \
+    file://extra_pixelbook-linux.cfg \
+"
+
+SRC_URI_append_x86-chromebook = " file://chromium-x86-64-defconfig-R77-4.19-no-chromium.cfg"
+
+SRC_URI_append = " file://fix_modules.cfg"
