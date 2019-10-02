@@ -7,9 +7,6 @@ CHROMEBOOK_NETMANAGER = "networkmanager networkmanager-openvpn network-manager-a
 # Command Utils
 IMAGE_INSTALL_append = " bash-completion util-linux-fdisk util-linux-resizepart procps"
 
-# Network Utils
-IMAGE_INSTALL_append = " bind git nmap mosh curl netcat tcpdump traceroute"
-
 # HW Utils
 IMAGE_INSTALL_append = " usbutils util-linux-lsblk util-linux-dmesg kmod udev-extraconf hwdata lshw cryptsetup lvm2"
 
