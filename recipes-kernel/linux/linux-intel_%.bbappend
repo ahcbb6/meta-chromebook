@@ -1,3 +1,5 @@
+# See README.kernel.config for details on how the kernel configuration is built
+
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 
@@ -7,7 +9,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 # If the driver is built as module the firmware load correctly:
 # [drm] Finished loading DMC firmware i915/kbl_dmc_ver1_04.bin (v1.4)
 
-SRC_URI_append = " file://extra_pixelbook.cfg"
+SRC_URI_eve-chromebook_append = " file://extra_pixelbook-linux.cfg"
 
-# Base Skylake/Kaby Lake on the config coming from meta-intel (Nehalem)
-KMACHINE_coreix-64-skylake-intel-common = "intel-corei7-64"
+# Base both x86-chromebook and eve-chromebook on the intel-corei7-64 config
+KMACHINE_intel-x86-common = "intel-corei7-64"
