@@ -33,6 +33,8 @@ SRC_URI_append_eve-chromebook = " file://chromium-x86-64-defconfig-R77-4.19-no-c
     file://extra_pixelbook-linux.cfg \
 "
 
-SRC_URI_append_x86-chromebook = " file://chromium-x86-64-defconfig-R77-4.19-no-chromium.cfg"
+SRC_URI_append_x86-chromebook = " file://chromium-x86-64-defconfig-R77-4.19-no-chromium.cfg \
+    file://extra_chromebook.cfg \
+"
 
 SRC_URI_append = " file://fix_modules.cfg"

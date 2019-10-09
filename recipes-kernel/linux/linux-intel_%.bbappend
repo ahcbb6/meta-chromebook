@@ -13,3 +13,5 @@ SRC_URI_eve-chromebook_append = " file://extra_pixelbook-linux.cfg"
 
 # Base both x86-chromebook and eve-chromebook on the intel-corei7-64 config
 KMACHINE_intel-x86-common = "intel-corei7-64"
+
+SRC_URI_append_x86-chromebook = " file://extra_chromebook.cfg"
