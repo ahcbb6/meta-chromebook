@@ -12,15 +12,15 @@ KMACHINE_arm64-chromebook ?= "qemuarm64"
 COMPATIBLE_MACHINE_arm64-chromebook = "arm64-chromebook"
 
 
-SRCREV_machine_eve-chromebook ?= "25b14cdf9659c68ab32d66616dfdbbe2ece3fd94"
-SRCREV_meta_eve-chromebook ?= "56f5bc749e5a8e40b55a3819288ac277813ec5ef"
+SRCREV_machine_eve-chromebook ?= "dd25a04fc5e2e4549fc9b86157a01e0c72b53b03"
+SRCREV_meta_eve-chromebook ?= "b867b78b5019ae455af97dec7794cff7527d7624"
 KBRANCH_eve-chromebook  = "v5.2/standard/base"
-LINUX_VERSION_eve-chromebook = "5.2.17"
+LINUX_VERSION_eve-chromebook = "5.2.20"
 
-SRCREV_machine_x86-chromebook ?= "25b14cdf9659c68ab32d66616dfdbbe2ece3fd94"
-SRCREV_meta_x86-chromebook ?= "56f5bc749e5a8e40b55a3819288ac277813ec5ef"
+SRCREV_machine_x86-chromebook ?= "dd25a04fc5e2e4549fc9b86157a01e0c72b53b03"
+SRCREV_meta_x86-chromebook ?= "b867b78b5019ae455af97dec7794cff7527d7624"
 KBRANCH_x86-chromebook  = "v5.2/standard/base"
-LINUX_VERSION_x86-chromebook = "5.2.17"
+LINUX_VERSION_x86-chromebook = "5.2.20"
 
 
 SRCREV_machine_arm64-chromebook ?= "97956dd1930f3213f685ce9875df6f3418cef6db"
