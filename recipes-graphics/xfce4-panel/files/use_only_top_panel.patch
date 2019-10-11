@@ -1,0 +1,54 @@
+Index: xfce4-panel-4.14.0/migrate/default.xml.in
+===================================================================
+--- xfce4-panel-4.14.0.orig/migrate/default.xml.in
++++ xfce4-panel-4.14.0/migrate/default.xml.in
+@@ -4,7 +4,6 @@
+   <property name="configver" type="int" value="@XFCE4_PANEL_CONFIG_VERSION@"/>
+   <property name="panels" type="array">
+     <value type="int" value="1"/>
+-    <value type="int" value="2"/>
+     <property name="panel-1" type="empty">
+       <property name="position" type="string" value="p=6;x=0;y=0"/>
+       <property name="length" type="uint" value="100"/>
+@@ -18,30 +17,12 @@
+         <value type="int" value="4"/>
+         <value type="int" value="5"/>
+         <value type="int" value="6"/>
+-        <value type="int" value="7"/>
+-        <value type="int" value="8"/>
+-        <value type="int" value="9"/>
++        <value type="int" value="23"/>
+         <value type="int" value="10"/>
+         <value type="int" value="11"/>
+-        <value type="int" value="12"/>
++        <value type="int" value="24"/>
+         <value type="int" value="13"/>
+-        <value type="int" value="14"/>
+-      </property>
+-    </property>
+-    <property name="panel-2" type="empty">
+-      <property name="autohide-behavior" type="uint" value="1"/>
+-      <property name="position" type="string" value="p=10;x=0;y=0"/>
+-      <property name="position-locked" type="bool" value="true"/>
+-      <property name="size" type="uint" value="48"/>
+-      <property name="plugin-ids" type="array">
+-        <value type="int" value="15"/>
+-        <value type="int" value="16"/>
+-        <value type="int" value="17"/>
+-        <value type="int" value="18"/>
+-        <value type="int" value="19"/>
+-        <value type="int" value="20"/>
+-        <value type="int" value="21"/>
+-        <value type="int" value="22"/>
++        <value type="int" value="12"/>
+       </property>
+     </property>
+   </property>
+@@ -104,5 +85,7 @@
+     </property>
+     <property name="plugin-21" type="string" value="separator"/>
+     <property name="plugin-22" type="string" value="directorymenu"/>
++    <property name="plugin-23" type="string" value="netload"/>
++    <property name="plugin-24" type="string" value="battery"/>
+   </property>
+ </channel>
