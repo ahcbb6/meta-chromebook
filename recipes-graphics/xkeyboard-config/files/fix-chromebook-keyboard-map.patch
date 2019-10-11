@@ -1,0 +1,43 @@
+Index: xkeyboard-config-2.27/symbols/inet
+===================================================================
+--- xkeyboard-config-2.27.orig/symbols/inet
++++ xkeyboard-config-2.27/symbols/inet
+@@ -1884,22 +1884,22 @@ xkb_symbols "htcdream" {
+ partial alphanumeric_keys
+ xkb_symbols "chromebook" {
+ 	include "level3(ralt_switch)"
+-        key <FK01> {    [ XF86Back ] };
+-        key <FK02> {    [ XF86Forward ] };
+-        key <FK03> {    [ XF86Reload ] };
+-        key <FK04> {    [ F11 ] };
+-//        key <FK05> {    [ F5, F5, F5, F5 ] }; // Overview key
+-        key <FK06> {    [ XF86MonBrightnessDown ] };
+-        key <FK07> {    [ XF86MonBrightnessUp ] };
+-        key <FK08> {    [ XF86AudioMute ] };
+-        key <FK09> {    [ XF86AudioLowerVolume ] };
+-        key <FK10> {    [ XF86AudioRaiseVolume ] };
+-        key <BKSP> {    [ BackSpace, BackSpace, Delete ] };
+-        key <UP>   {    [ Up, Up, Prior, Up ] };
+-        key <DOWN> {    [ Down, Down, Next, Down ] };
+-        key <LEFT> {    [ Left, Left, Home, Left ] };
+-        key <RGHT> {    [ Right, Right, End, Right ] };
+-        key <LWIN> {    [ Super_L, Super_L, Caps_Lock, Super_L ] };
++        key <FK01> {    [ F1, F1, XF86Back, XF86Back ] };
++        key <FK02> {    [ F2, F2, XF86Forward, XF86Forward ] };
++        key <FK03> {    [ F3, F3, XF86Reload, XF86Reload ] };
++        key <FK04> {    [ F4, F4, XF86Terminal, XF86Terminal ] };
++        key <FK05> {    [ F5, F5, XF86RotateWindows, XF86RotateWindows ] };
++        key <FK06> {    [ F6, F6, XF86MonBrightnessDown, XF86MonBrightnessDown ] };
++        key <FK07> {    [ F7, F7, XF86MonBrightnessUp, XF86MonBrightnessUp ] };
++        key <FK08> {    [ F8, F8, XF86AudioMute, XF86AudioMute ] };
++        key <FK09> {    [ F10, F10, XF86AudioLowerVolume, XF86AudioLowerVolume ] };
++        key <FK10> {    [ F10, F10, XF86AudioRaiseVolume, XF86AudioRaiseVolume ] };
++        key <BKSP> {    [ BackSpace, BackSpace, Delete, Delete ] };
++        key <UP>   {    [ Up, Up, Prior, Prior ] };
++        key <DOWN> {    [ Down, Down, Next, Next ] };
++        key <LEFT> {    [ Left, Left, Home, Home ] };
++        key <RGHT> {    [ Right, Right, End, End ] };
++        key <LWIN> {    [ Super_L, Super_L, Caps_Lock, Caps_Lock ] };
+ };
+ 
+ // Pixelbook (Chromebook-Eve)
