@@ -1,6 +1,6 @@
 DESCRIPTION = "A small image just capable of allowing the pixelbook to boot to console, with minimal network capabilities"
 
-CHROMEBOOK_NETMANAGER ?= "connman connman-client connman-openvpn"
+CHROMEBOOK_NETMANAGER ?= "connman connman-client connman-plugin-vpn-openvpn connman-plugin-vpn-vpnc connman-plugin-vpn-l2tp connman-plugin-vpn-pptp"
 
 IMAGE_INSTALL = "packagegroup-core-boot ${CORE_IMAGE_EXTRA_INSTALL}"
 
