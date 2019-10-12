@@ -51,6 +51,15 @@ Specific Chromebook recipes for:
 **Kernel:**
  - Images work properly on both **linux-yocto** and **linux-intel**, and are updated
  to their latest version.
+ - **linux-chromium** Can also be used, although its only been tested on Chromebook EVE
+ and it is currently using the latest upstream version (4.19).
+ To use it, setting:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-chromium"
+PREFERRED_VERSION_linux-chromium = "4.19.%"
+```
+Should suffice.
+
 
 **Images:**
 * **chromebook-image-minimal:** Console image with network and firmware update capabilities
