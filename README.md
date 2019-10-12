@@ -5,12 +5,13 @@ Chromebooks are widely used nowadays, providing quality hardware mostly
 used for lightweight workloads.
 
 While ChromeOS provides many interesting capabilities, it simply does not
-match a Linux Operating System when it comes to be used as a dev environment.
+match a Linux Operating System when it comes to be used as a dev environment,
+it also does not mean a product on "chromebook HW" cannot be based on pure
+Linux either.
 
 This layer allows you to build a Linux distribution for Chromebook devices
 using the OpenEmbedded Infrastructure.
 
-(It is a bit tuned/tweaked for the Pixelbook (Chromebook EVE)).
 
 Please see the corresponding sections below for details.
 
@@ -75,10 +76,15 @@ II. Dependencies
         meta-poky
         meta-intel
         meta-oe
-        meta-multimedia
-        meta-gnome
         meta-python
         meta-networking
+
+
+For a full GUI image using xfce and featuring the chromium browser, the following layers
+are also required:
+
+        meta-multimedia
+        meta-gnome
         meta-xfce
         meta-browser
         meta-clang
