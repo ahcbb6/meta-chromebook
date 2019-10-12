@@ -1,0 +1,224 @@
+trigger:
+ - master
+ - master-next
+ - zeus
+
+schedules:
+- cron: "0 12 * * 0"
+  displayName: Weekly Sunday build
+  branches:
+    include:
+    - master
+    - zeus
+  always: true
+
+
+jobs:
+- job: ChromebookJob
+  timeoutInMinutes: 0
+
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  variables:
+    SSTATE_MIRRORS: 'file://.* file:///home/vsts/sstate_mirrors/PATH file://.* http://sstate.yoctoproject.org/3.0/PATH;downloadfilename=PATH;downloadfilename=PATH'
+    DL_DIR: '/home/vsts/downloads/'
+    SSTATE_DIR: '/mnt/sstate-cache/'
+    SSTATE_MIRRORS_DIR: '/home/vsts/sstate_mirrors/'
+    MACHINE_X86: 'x86-chromebook'
+    MACHINE_PXL: 'eve-chromebook'
+    MACHINE: 'x86-chromebook'
+    KERNEL_YOCTO: 'linux-yocto'
+    KERNEL_INTEL: 'linux-intel'
+    KERNEL_CHROMIUM: 'linux-chromium'
+    DEPLOY_ARTIFACTS_DIR: '/mnt/deploydir/'
+    PIPELINE_ID: '12'
+
+  steps:
+  - bash: |
+      echo "Installing dependencies"
+      sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+      build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+      xz-utils debianutils iputils-ping libsdl1.2-dev xterm
+      echo "Dependencies installed"
+    displayName: 'Installing Dependencies'
+
+  - bash: |
+      echo "Building Linux for Chromebooks using Yocto"
+      if [ "$(DEBUG_PIPE)" == "1" ]; then
+            echo "Debug variables:"
+            echo Build.SourceBranch $(Build.SourceBranch)
+            echo Build.SourceBranchName $(Build.SourceBranchName)
+            echo System.PullRequest.SourceBranch $(System.PullRequest.SourceBranch)
+            echo System.PullRequest.TargetBranch $(System.PullRequest.TargetBranch)
+            echo "Free space before"
+            df -h
+            echo "Freeing up disk space"
+      fi
+      export TOFREE="/usr/share/dotnet /usr/local/share/boost/ /usr/local/share/rust /usr/share/rust \
+      /usr/local/lib/android/ /usr/local/go* /usr/lib/jvm /usr/lib/google-cloud-sdk /opt/* /var/cache/apt/archives \
+      "
+      # This cant be done in parallel
+      for i in ${TOFREE};do sudo rm -rf  $i; done;
+      if [ "$(DEBUG_PIPE)" == "1" ]; then
+            df -h
+            # du -Sh / 2>/dev/null | sort -rh | head -n 200
+            # du -akS -d 4  / 2>dev/null| sort -n -r | head -n 50
+            echo "Creating downloads and sstate directories"
+      fi
+      sudo mkdir $(DL_DIR)
+      sudo mkdir $(SSTATE_DIR)
+      sudo mkdir $(SSTATE_MIRRORS_DIR)
+      sudo mkdir $(DEPLOY_ARTIFACTS_DIR)
+      sudo chown vsts:vsts $(SSTATE_DIR)
+      sudo chown vsts:vsts $(DL_DIR)
+      sudo chown vsts:vsts $(SSTATE_MIRRORS_DIR)
+      sudo chown vsts:vsts ${DEPLOY_ARTIFACTS_DIR}
+    displayName: 'Clean up container'
+
+
+  - bash: |
+      cd ~/
+      echo "Cloning Yocto Project"
+      PULLREQBRANCH=$(System.PullRequest.TargetBranch)
+      if [ -z "$PULLREQBRANCH" ]; then
+        if [ "$(Build.SourceBranchName)" == "master-next" ]; then
+          YPBRANCH="master";
+        else
+          YPBRANCH=$(Build.SourceBranchName);
+        fi
+      else
+        YPBRANCH=$PULLREQBRANCH;
+      fi
+      echo "Building Yocto branch: $YPBRANCH"
+      git clone git://git.yoctoproject.org/poky -b $YPBRANCH
+      cd poky
+      git clone https://git.yoctoproject.org/git/meta-intel -b $YPBRANCH
+      git clone git://git.openembedded.org/meta-openembedded -b $YPBRANCH
+    displayName: 'Cloning Repositories'
+
+  - bash: |
+      # Add layers and create local.conf
+      echo "Creating proper bblayers.conf"
+      cd ~/poky
+      source oe-init-build-env
+      echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS}\"" >> ./conf/local.conf
+      echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> ./conf/local.conf
+      echo "DL_DIR = \"${DL_DIR}\"" >> ./conf/local.conf
+      bitbake-layers add-layer ../meta-intel
+      bitbake-layers add-layer ../meta-openembedded/meta-oe
+      bitbake-layers add-layer ../meta-openembedded/meta-python
+      bitbake-layers add-layer ../meta-openembedded/meta-networking
+      bitbake-layers add-layer $(Build.SourcesDirectory)
+
+      echo "bblayers.conf:"
+      cat conf/bblayers.conf
+    displayName: 'Create build configuration'
+
+  # Sstate from current branch being built
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: $(System.TeamProjectId)
+      definition: $(PIPELINE_ID)
+      buildVersionToDownload: 'latestFromBranch'
+      #     branchName: 'refs/heads/master-next'
+      branchName: $(Build.SourceBranch)
+      artifactName: '$(MACHINE)_SState'
+      targetPath: '$(SSTATE_MIRRORS_DIR)'
+
+  - bash: |
+      echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_YOCTO}"
+      cd ~/poky
+      source oe-init-build-env
+      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_YOCTO}\"" >> ./conf/local.conf
+      echo "Building with the following configuration:"
+      tail -n 10 conf/local.conf
+      bitbake chromebook-image-minimal
+      if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
+    displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_YOCTO)'
+
+  - bash: |
+      echo "Moving artifacts to be deployed"
+      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+      # Kernel
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
+      # QEMUboot
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
+      # WIC
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
+      # Modules
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
+      # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
+      echo "Artifacts moved"
+    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_YOCTO)'
+
+  - publish: $(DEPLOY_ARTIFACTS_DIR)
+    artifact: $(MACHINE)-$(KERNEL_YOCTO)
+
+  - bash: |
+      echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_INTEL}"
+      cd ~/poky
+      source oe-init-build-env
+      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_INTEL}\"" >> ./conf/local.conf
+      echo "Building with the following configuration:"
+      tail -n 10 conf/local.conf
+      bitbake chromebook-image-minimal
+      if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
+    displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_INTEL)'
+
+  - bash: |
+      echo "Moving artifacts to be deployed"
+      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+      # Kernel
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
+      # QEMUboot
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
+      # WIC
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
+      # Modules
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
+      # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
+      echo "Artifacts moved"
+    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_INTEL)'
+
+  - publish: $(DEPLOY_ARTIFACTS_DIR)
+    artifact:  $(MACHINE)-$(KERNEL_INTEL)
+
+  - bash: |
+      echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_CHROMIUM}"
+      cd ~/poky
+      source oe-init-build-env
+      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_CHROMIUM}\"" >> ./conf/local.conf
+      echo "Building with the following configuration:"
+      tail -n 10 conf/local.conf
+      bitbake chromebook-image-minimal
+      if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
+    displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_CHROMIUM)'
+
+  - bash: |
+      echo "Moving artifacts to be deployed"
+      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+      # Kernel
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
+      # QEMUboot
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
+      # WIC
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
+      # Modules
+      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
+      # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
+      echo "Artifacts moved"
+    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_CHROMIUM)'
+
+  - publish: $(DEPLOY_ARTIFACTS_DIR)
+    artifact: $(MACHINE)-$(KERNEL_CHROMIUM)
+
+  - publish: $(SSTATE_DIR)
+    artifact: '$(MACHINE)_SState'
+
+  # - publish: '$(RPMDIR)'
+  #   artifact: '$(MACHINE)_RPMS'
