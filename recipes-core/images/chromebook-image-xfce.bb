@@ -34,7 +34,7 @@ IMAGE_INSTALL_append = " xf86-input-libinput libinput setxkbmap xkeyboard-config
 # It seems that this only happens when starting X as root
 # IMAGE_INSTALL_append = " xfwm4-config-rm"
 
-
-# Could probably install kernel-modules here and call it a day
+# Since this is a more complete image, install built kernel-modules for more functionality
+IMAGE_INSTALL_append = " kernel-modules"
 
 EXTRA_IMAGE_FEATURES += "package-management"
