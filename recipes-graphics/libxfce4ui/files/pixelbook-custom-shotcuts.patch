@@ -11,7 +11,7 @@ Index: libxfce4ui-4.14.1/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
          <property name="startup-notify" type="bool" value="true"/>
        </property>
 -      <property name="&lt;Alt&gt;F3" type="string" value="xfce4-appfinder">
-+      <property name="Tools" type="string" value="xfce4-appfinder">
++      <property name="Super_L" type="string" value="xfce4-appfinder">
          <property name="startup-notify" type="bool" value="true"/>
        </property>
        <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xflock4"/>
