@@ -1,5 +1,5 @@
-## Chromebook BSP layer for OpenEmbedded/Yocto
-========================================================================
+## Chromebook layer compatible with OpenEmbedded/Yocto Project
+
 
 Chromebooks are widely used nowadays, providing quality hardware mostly
 used for lightweight workloads.
@@ -14,6 +14,14 @@ using the OpenEmbedded Infrastructure.
 
 
 Please see the corresponding sections below for details.
+
+
+### Build Status
+
+|Status   	| Pixelbook  	|X86-Chromebook   	|ARM64-Chromebook   	|
+|---	|---	|---	|---	|
+|master  	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-eve?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=13&branchName=master)   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-x86?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=12&branchName=master)   	|   	|
+|zeus   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-eve?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=13&branchName=zeus)   	| [![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-eve?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=13&branchName=zeus)  	|   	|
 
 
 Table of Contents
@@ -32,42 +40,43 @@ I. What is this layer for?
 This layer allows users to build a customized Linux Distribution
 for Chromebook devices.
 
-The layer contains MACHINEs (BSPs) for:
-* **X86 based Chromebooks**
-* **ARM64 based Chromebooks**
-* **Pixelbook (EVE)**
-   * A specific tune for Skylake devices is added since the tune coming
+The layer contains:
+
+#### MACHINEs (BSPs):
+- **X86 based Chromebooks**
+- **ARM64 based Chromebooks**
+- **Pixelbook (Chromebook EVE)** * A specific tune for Skylake devices is added since the tune coming
    from meta-intel uses a very old TUNE at this point (Nehalem).
 
-Specific Chromebook recipes for:
-* **flashrom**
-* **gbb_utility**
-* **rootdev**
-* **crossystem**
-* **cbfstool**
-* **Seabios (MrChromeBox)**
-* **MrChromeBox Firmware Utility Scripts**
-
-**Kernel:**
- - Images work properly on both **linux-yocto** and **linux-intel**, and are updated
- to their latest version.
- - **linux-chromium** Can also be used, although its only been tested on Chromebook EVE
- and it is currently using the latest upstream version (4.19).
- To use it, setting:
-```
+#### Kernels:
+ - Images work properly with **Linux-Yocto**, **Linux-Chromium** and **Linux-Intel**, and are updated
+ to their latest version (to the day this was written).
+ 
+To change the default setting adding the following to your *local.conf* should suffice, e.g.:
+```bash
 PREFERRED_PROVIDER_virtual/kernel = "linux-chromium"
 PREFERRED_VERSION_linux-chromium = "4.19.%"
 ```
-Should suffice.
 
-
-**Images:**
-* **chromebook-image-minimal:** Console image with network and firmware update capabilities
+#### Images:
+* **chromebook-image-minimal:** Console image with network, VPN and firmware update capabilities
 * **chromebook-image-xfce:** A full image, capable to boot using a graphics environment (XFCE),
    by definition it contains more cmdline utilities, network utilities, and it meant to be
-   used mostly as a dev environment, it also contains python, vim and obviously CHROMIUM.
+   used mostly as a dev environment, it also contains python, vim and obviously the CHROMIUM web browser.
 
-Tweaks:
+#### Chromebook Specific Recipes:
+- **flashrom**
+- **gbb_utility**
+- **rootdev**
+- **crossystem**
+- **cbfstool**
+- **Seabios (MrChromeBox Fork)**
+- **MrChromeBox Firmware Utility Scripts**
+
+Which can be used to update the firmware of chromebook devices and such.
+
+
+#### Tweaks:
  - An extra user is used on both images (chronospoky)
  - Keymaps: a keymap is provided both for console en X11 to be used on Chromebooks
    * xkeyboard-config already provides a chromebook model, but cant be used without X11
@@ -101,37 +110,70 @@ are also required:
 
 III. Usage
 =============================================
-
-Assumptions:
-- All the layers mentioned above have been cloned already
-
-Source the OE environment
- ```bash
+1.- Clone the required repositories
+```bash
+$ git clone https://git.yoctoproject.org/git/poky -b zeus
+$ cd poky
+$ git clone https://git.yoctoproject.org/git/meta-intel -b zeus
+$ git clone https://git.openembedded.org/meta-openembedded -b zeus
+$ git clone https://github.com/aehs29/meta-chromebook.git -b zeus
+```
+2.- Add layers to your *bblayers.conf*:
+```bash
 $ source oe-init-build-env
- ```
-Run 'bitbake-layers add-layer meta-chromebook' (This process is repeated for each of the above layers)
+$ bitbake-layers add-layer ../meta-intel
+$ bitbake-layers add-layer ../meta-openembedded/meta-oe
+$ bitbake-layers add-layer ../meta-openembedded/meta-python
+$ bitbake-layers add-layer ../meta-openembedded/meta-networking
+$ bitbake-layers add-layer ../meta-openembedded/meta-chromebook
+```
+3.- Add the required variables to your local.conf
 ```bash
-$ bitbake-layers add-layer meta-chromebook
- ```
-Create an image (e.g.)
+$ echo "MACHINE = \"eve-chromebook\"" >> ./conf/local.conf
+```
+4.- Build an image
 ```bash
-$ MACHINE=eve-chromebook bitbake chromebook-image-xfce
- ```
-or
+$ bitbake chromebook-image-minimal
+```
+5.- Flash the image to a storage device
 ```bash
-$ MACHINE=x86-chromebook bitbake chromebook-image-minimal
- ```
-Flash the image to a storage device
-```bash
-dd if=tmp/deploy/images/eve-chromebook/pixelbook-image-xfce-eve-chromebook.wic of=/dev/<your-dev>
- ```
+$ dd if=tmp/deploy/images/eve-chromebook/chromebook-image-minimal-eve-chromebook.wic of=/dev/<your-dev>
+```
+ 
 Boot from USB (it is assumed the BIOS has been flashed to allow legacy boot), for more information
 on upgrading Coreboot or SeaBIOS please see: https://mrchromebox.tech/#chromeos
 
-
-Seabios can be built from source as well from this layer and installed via an RPM, which will install
+>Seabios can be built from source as well from this layer and installed via an RPM, which will install
 it on /usr/share/firmware/ and the necessary tools to flash it are also provided (flashrom).
 
+6.- Login as chronospoky (Reference to the chronos user used by Chromebooks running Chrome/Chromium OS)
+```bash
+Poky (Yocto Project Reference Distro) 3.0 eve-chromebook /dev/ttyS0
+eve-chromebook login: chronospoky
+```
+
+***
+#### Mix it up
+To use a different kernel:
+```bash
+$ echo "PREFERRED_PROVIDER_virtual/kernel = \"linux-chromium\"" >> ./conf/local.conf
+```
+or
+```bash
+$ echo "PREFERRED_PROVIDER_virtual/kernel = \"linux-intel\"" >> ./conf/local.conf
+```
+To use a different MACHINE:
+```bash
+$ echo "MACHINE = \"x86-chromebook\"" >> ./conf/local.conf
+```
+To build a full GUI Linux Image which includes XFCE and Chromium (Repeat step 1 and 2 to add extra required layers: meta-clang, meta-browser, meta-xfce, etc. see [II. Layer Dependencies](https://github.com/aehs29/meta-chromebook/tree/master#ii-dependencies).):
+```bash
+$ bitbake chromebook-image-xfce
+```
+and
+```bash
+$ dd if=tmp/deploy/images/eve-chromebook/chromebook-image-xfce-eve-chromebook.wic of=/dev/<your-dev>
+```
 
 IV. Submitting Patches
 =============================================
