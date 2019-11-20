@@ -4,8 +4,8 @@ trigger:
  - zeus
 
 schedules:
-- cron: "0 12 * * 0"
-  displayName: Weekly Sunday build
+- cron: "0 12 * * *"
+  displayName: Daily build
   branches:
     include:
     - master
@@ -37,10 +37,14 @@ jobs:
   steps:
   - bash: |
       echo "Installing dependencies"
-      sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+      sudo apt update
+      until sudo apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
       build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
       xz-utils debianutils iputils-ping libsdl1.2-dev xterm
-      echo "Dependencies installed"
+      do
+        echo "Failed updating, trying again..."
+        sleep 1
+      done
     displayName: 'Installing Dependencies'
 
   - bash: |
@@ -116,16 +120,16 @@ jobs:
     displayName: 'Create build configuration'
 
   # Sstate from current branch being built
-  - task: DownloadPipelineArtifact@2
-    inputs:
-      buildType: 'specific'
-      project: $(System.TeamProjectId)
-      definition: $(PIPELINE_ID)
-      buildVersionToDownload: 'latestFromBranch'
-      #     branchName: 'refs/heads/master-next'
-      branchName: $(Build.SourceBranch)
-      artifactName: '$(MACHINE)_SState'
-      targetPath: '$(SSTATE_MIRRORS_DIR)'
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     buildType: 'specific'
+  #     project: $(System.TeamProjectId)
+  #     definition: $(PIPELINE_ID)
+  #     buildVersionToDownload: 'latestFromBranch'
+  #     #     branchName: 'refs/heads/master-next'
+  #     branchName: $(Build.SourceBranch)
+  #     artifactName: '$(MACHINE)_SState'
+  #     targetPath: '$(SSTATE_MIRRORS_DIR)'
 
   - bash: |
       echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_YOCTO}"
@@ -139,83 +143,83 @@ jobs:
       if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
     displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_YOCTO)'
 
-  - bash: |
-      echo "Moving artifacts to be deployed"
-      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
-      # Kernel
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
-      # QEMUboot
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
-      # WIC
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
-      # Modules
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
-      # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
-      echo "Artifacts moved"
-    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_YOCTO)'
+  # - bash: |
+  #     echo "Moving artifacts to be deployed"
+  #     rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+  #     # Kernel
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
+  #     # QEMUboot
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
+  #     # WIC
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
+  #     # Modules
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
+  #     # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
+  #     # echo "Artifacts moved"
+  #   displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_YOCTO)'
 
-  - publish: $(DEPLOY_ARTIFACTS_DIR)
-    artifact: $(MACHINE)-$(KERNEL_YOCTO)
+  # - publish: $(DEPLOY_ARTIFACTS_DIR)
+  #   artifact: $(MACHINE)-$(KERNEL_YOCTO)
 
-  - bash: |
-      echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_INTEL}"
-      cd ~/poky
-      source oe-init-build-env
-      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
-      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_INTEL}\"" >> ./conf/local.conf
-      echo "Building with the following configuration:"
-      tail -n 10 conf/local.conf
-      bitbake chromebook-image-minimal
-      if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
-    displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_INTEL)'
+  # - bash: |
+  #     echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_INTEL}"
+  #     cd ~/poky
+  #     source oe-init-build-env
+  #     echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+  #     echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_INTEL}\"" >> ./conf/local.conf
+  #     echo "Building with the following configuration:"
+  #     tail -n 10 conf/local.conf
+  #     bitbake chromebook-image-minimal
+  #     if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
+  #   displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_INTEL)'
 
-  - bash: |
-      echo "Moving artifacts to be deployed"
-      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
-      # Kernel
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
-      # QEMUboot
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
-      # WIC
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
-      # Modules
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
-      # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
-      echo "Artifacts moved"
-    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_INTEL)'
+  # - bash: |
+  #     echo "Moving artifacts to be deployed"
+  #     rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+  #     # Kernel
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
+  #     # QEMUboot
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
+  #     # WIC
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
+  #     # Modules
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
+  #     # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
+  #     # echo "Artifacts moved"
+  #   displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_INTEL)'
 
-  - publish: $(DEPLOY_ARTIFACTS_DIR)
-    artifact:  $(MACHINE)-$(KERNEL_INTEL)
+  # - publish: $(DEPLOY_ARTIFACTS_DIR)
+  #   artifact:  $(MACHINE)-$(KERNEL_INTEL)
 
-  - bash: |
-      echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_CHROMIUM}"
-      cd ~/poky
-      source oe-init-build-env
-      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
-      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_CHROMIUM}\"" >> ./conf/local.conf
-      echo "Building with the following configuration:"
-      tail -n 10 conf/local.conf
-      bitbake chromebook-image-minimal
-      if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
-    displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_CHROMIUM)'
+  # - bash: |
+  #     echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL_CHROMIUM}"
+  #     cd ~/poky
+  #     source oe-init-build-env
+  #     echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+  #     echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL_CHROMIUM}\"" >> ./conf/local.conf
+  #     echo "Building with the following configuration:"
+  #     tail -n 10 conf/local.conf
+  #     bitbake chromebook-image-minimal
+  #     if [ "$(DEBUG_PIPE)" == "1" ]; then echo "Done building"; echo "Free space after building:"; df -h; fi
+  #   displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL_CHROMIUM)'
 
-  - bash: |
-      echo "Moving artifacts to be deployed"
-      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
-      # Kernel
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
-      # QEMUboot
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
-      # WIC
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
-      # Modules
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
-      # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
-      echo "Artifacts moved"
-    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_CHROMIUM)'
+  # - bash: |
+  #     echo "Moving artifacts to be deployed"
+  #     rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+  #     # Kernel
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
+  #     # QEMUboot
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
+  #     # WIC
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
+  #     # Modules
+  #     mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
+  #     # rm -rf /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*
+  #     # echo "Artifacts moved"
+  #   displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL_CHROMIUM)'
 
-  - publish: $(DEPLOY_ARTIFACTS_DIR)
-    artifact: $(MACHINE)-$(KERNEL_CHROMIUM)
+  # - publish: $(DEPLOY_ARTIFACTS_DIR)
+  #   artifact: $(MACHINE)-$(KERNEL_CHROMIUM)
 
   - publish: $(SSTATE_DIR)
     artifact: '$(MACHINE)_SState'
