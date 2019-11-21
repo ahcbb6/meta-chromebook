@@ -1,0 +1,234 @@
+trigger: none
+
+schedules:
+- cron: "0 11 * * *"
+  displayName: Daily build
+  branches:
+    include:
+    - master
+    - zeus
+  always: true
+
+
+jobs:
+- job: SstateJob
+  timeoutInMinutes: 0
+
+  pool:
+    vmImage: 'ubuntu-18.04'
+
+  variables:
+    SSTATE_MIRRORS_ZEUS: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.0.1/PATH;downloadfilename=PATH'
+    SSTATE_MIRRORS_MASTER: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.1/PATH;downloadfilename=PATH'
+    DL_DIR: '/mnt/downloads/'
+    SSTATE_DIR: '/home/vsts/downloads/'
+    SSTATE_MIRRORS_DIR: '/home/vsts/sstate_mirrors/'
+    MACHINE_X86: 'x86-chromebook'
+    MACHINE_PXL: 'eve-chromebook'
+    KERNEL_YOCTO: 'linux-yocto'
+    KERNEL_INTEL: 'linux-intel'
+    KERNEL_CHROMIUM: 'linux-chromium'
+    DEPLOY_ARTIFACTS_DIR: '/mnt/deploydir/'
+    PIPELINE_ID: $(System.DefinitionId)
+    BRANCH_TO_BUILD: $(Build.SourceBranchName)
+    MACHINE: 'qemux86-64'
+    KERNEL: $(KERNEL_YOCTO)
+    PIPELINE_EVE_YOCTO: 14
+    PIPELINE_EVE_INTEL: 15
+    PIPELINE_EVE_CHROMIUM: 16
+    PIPELINE_X86_YOCTO: 19
+    PIPELINE_X86_INTEL: 20
+    PIPELINE_X86_CHROMIUM: 21
+    SSTATE_PIPELINE: 18
+    SSTATE_PIPELINE_NATIVE: 22
+
+  steps:
+  - bash: |
+      sudo mkdir $(DL_DIR)
+      sudo mkdir $(SSTATE_DIR)
+      sudo mkdir $(SSTATE_MIRRORS_DIR)
+      sudo mkdir $(DEPLOY_ARTIFACTS_DIR)
+      sudo chown vsts:vsts $(SSTATE_DIR)
+      sudo chown vsts:vsts $(DL_DIR)
+      sudo chown vsts:vsts $(SSTATE_MIRRORS_DIR)
+      sudo chown vsts:vsts ${DEPLOY_ARTIFACTS_DIR}
+    displayName: 'Set up container directories'
+
+
+################## SState EVE - master ##################
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_EVE_YOCTO)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/master'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_EVE_INTEL)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/master'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_EVE_CHROMIUM)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/master'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+
+# ################## SState x86 - master ##################
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_X86_YOCTO)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/master'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_X86_INTEL)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/master'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_X86_CHROMIUM)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/master'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+# ################## SState EVE - zeus ##################
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_EVE_YOCTO)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/zeus'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_EVE_INTEL)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/zeus'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_EVE_CHROMIUM)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/zeus'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+
+# ################## SState x86 - zeus ##################
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_X86_YOCTO)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/zeus'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_X86_INTEL)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/zeus'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - task: DownloadPipelineArtifact@2
+    condition: always()
+    inputs:
+      source: 'specific'
+      project: $(System.TeamProjectId)
+      pipeline: $(PIPELINE_X86_CHROMIUM)
+      runVersion: 'latestFromBranch'
+      runBranch: 'refs/heads/zeus'
+      artifactName: 'SState'
+      targetPath: '$(SSTATE_DIR)'
+      allowFailedBuilds: true
+      allowPartiallySucceededBuilds: true
+      continueOnError: true
+
+  - publish: $(SSTATE_DIR)
+    artifact: 'SState'
+    condition: always()

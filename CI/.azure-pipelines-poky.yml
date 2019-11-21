@@ -20,8 +20,8 @@ jobs:
   variables:
     SSTATE_MIRRORS_ZEUS: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.0.1/PATH;downloadfilename=PATH'
     SSTATE_MIRRORS_MASTER: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.1/PATH;downloadfilename=PATH'
-    DL_DIR: '/home/vsts/downloads/'
-    SSTATE_DIR: '/mnt/sstate-cache/'
+    DL_DIR: '/mnt/downloads/'
+    SSTATE_DIR: '/home/vsts/downloads/'
     SSTATE_MIRRORS_DIR: '/home/vsts/sstate_mirrors/'
     MACHINE_X86: 'x86-chromebook'
     MACHINE_PXL: 'eve-chromebook'
