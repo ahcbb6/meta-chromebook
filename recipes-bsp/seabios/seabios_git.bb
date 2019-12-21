@@ -6,6 +6,7 @@ SECTION = "firmware"
 SRC_URI = " \
     git://github.com/MrChromebox/SeaBIOS.git;branch=master;protocol=https \
     file://hostcc.patch \
+    file://use_python_from_buildsystem.patch \
 "
 SRCREV = "1b63074bb336e36a5c8b83bc8a623a37a34e77a8"
 
@@ -23,12 +24,15 @@ TUNE_CCARGS = ""
 EXTRA_OEMAKE += "HOSTCC='${BUILD_CC}'"
 EXTRA_OEMAKE += "CROSS_PREFIX=${TARGET_PREFIX}"
 
-COMPATIBLE_HOST = "(i.86|x86_64).*-linux"
+COMPATIBLE_HOST = "(i.86|x86_64|aarch64|arm).*-linux"
 
-CPU_VARIANT ?= "kbl"
+# This should be set on the machine.conf
+# SeaBIOS is not compatible with arm?
+CHROMIUM_CPU_VARIANT ?= "kbl"
+BIOSNAME ?= "Poky-MrChromebox-SeaBIOS-${CHROMIUM_CPU_VARIANT}"
 
 do_configure(){
-    cp ${S}/configs/.config-${CPU_VARIANT}-cros ${S}/.config
+    cp ${S}/configs/.config-${CHROMIUM_CPU_VARIANT}-cros ${S}/.config
 }
 
 do_compile() {
@@ -37,7 +41,6 @@ do_compile() {
     oe_runmake EXTRAVERSION=-${BIOSNAME}-`date +"%Y.%m.%d"`
 }
 
-BIOSNAME="Poky-MrChromebox-SeaBIOS-kbl"
 
 do_compile_append (){
 
@@ -60,4 +63,4 @@ do_install() {
 }
 
 
-DEPENDS += "coreboot-utils-native make-native"
+DEPENDS += "coreboot-utils-native make-native python3-native"
