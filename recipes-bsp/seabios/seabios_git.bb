@@ -24,10 +24,9 @@ TUNE_CCARGS = ""
 EXTRA_OEMAKE += "HOSTCC='${BUILD_CC}'"
 EXTRA_OEMAKE += "CROSS_PREFIX=${TARGET_PREFIX}"
 
-COMPATIBLE_HOST = "(i.86|x86_64|aarch64|arm).*-linux"
+COMPATIBLE_HOST = "(i.86|x86_64).*-linux"
 
-# This should be set on the machine.conf
-# SeaBIOS is not compatible with arm?
+# The CPU variant should be set on the machine.conf
 CHROMIUM_CPU_VARIANT ?= "kbl"
 BIOSNAME ?= "Poky-MrChromebox-SeaBIOS-${CHROMIUM_CPU_VARIANT}"
 
