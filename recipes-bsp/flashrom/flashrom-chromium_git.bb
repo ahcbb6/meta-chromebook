@@ -5,9 +5,11 @@ HOMEPAGE = "http://flashrom.org"
 LIC_FILES_CHKSUM = "file://COPYING;md5=751419260aa954499f7abaabaa882bbe"
 DEPENDS = "pciutils libusb libusb-compat"
 
-SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/flashrom;branch=factory-eve-9667.B;protocol=https"
+DEPENDS_append_mediatek8173-chromebook = " dtc"
 
-SRCREV = "b6e26e656c0696ccd1715a6d2c9acee75ab0c092"
+SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/flashrom;branch=${CHROMIUM_THIRDPARTY_BRANCH};protocol=https"
+
+SRCREV ?= "c4748b9f7661725ed17960c589c88540da92074d"
 
 S="${WORKDIR}/git"
 
@@ -17,4 +19,4 @@ do_install() {
     oe_runmake PREFIX=${prefix} DESTDIR=${D} install
 }
 
-CFLAGS_append = " -Wno-format-overflow"
+CFLAGS_append = " -Wno-format-overflow -Wno-implicit-function-declaration"
