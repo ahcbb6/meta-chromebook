@@ -1,14 +1,14 @@
 DESCRIPTION = "(Chromium Fork) Discover & annotate the root device"
 LICENSE = "GPLv2"
-HOMEPAGE = "TODO"
+HOMEPAGE = "https://chromium.googlesource.com/chromiumos/third_party/rootdev/+/refs/heads/master/README.chromium"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=562c740877935f40b262db8af30bca36"
 
-SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/rootdev;branch=factory-eve-9667.B;protocol=https \
+SRC_URI = "git://chromium.googlesource.com/chromiumos/third_party/rootdev;branch=${CHROMIUM_THIRDPARTY_BRANCH};protocol=https \
     file://provide_glibc227.patch \
 "
 
-SRCREV = "b9b8f1de0ab9d4b0e1739d7c0dc4ec232b85a5c3"
+SRCREV ?= "9b7d26a6a54f5f9e02b93a5d5ebf266fd748e06c"
 
 S="${WORKDIR}/git"
 
