@@ -44,7 +44,8 @@ The layer contains:
 
 #### MACHINEs (BSPs):
 - **X86 based Chromebooks**
-- **ARM64 based Chromebooks**
+- **ARM64 (Mediatek 8173) based Chromebooks** See [README.ARM](https://github.com/aehs29/meta-chromebook/blob/master/README.ARM.md) for details.
+
 - **Pixelbook (Chromebook EVE)** * A specific tune for Skylake devices is added since the tune coming
    from meta-intel uses a very old TUNE at this point (Nehalem).
 
