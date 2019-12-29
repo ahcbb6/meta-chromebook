@@ -61,12 +61,13 @@ PREFERRED_VERSION_linux-chromium = "4.19.%"
 #### Images:
 * **chromebook-image-minimal:** Console image with network, VPN and firmware update capabilities
 * **chromebook-image-xfce:** A full image, capable to boot using a graphics environment (XFCE),
-   by definition it contains more cmdline utilities, network utilities, and it meant to be
+   by definition it contains more cmdline utilities, network utilities, and its meant to be
    used mostly as a dev environment, it also contains python, vim and obviously the CHROMIUM web browser.
 
 #### Chromebook Specific Recipes:
 - **flashrom**
-- **gbb_utility**
+- **futility**
+- **vbutil**
 - **rootdev**
 - **crossystem**
 - **cbfstool**
@@ -81,7 +82,7 @@ Which can be used to update the firmware of chromebook devices and such.
  - Keymaps: a keymap is provided both for console en X11 to be used on Chromebooks
    * xkeyboard-config already provides a chromebook model, but cant be used without X11
    * A chromebook keymap is provided to be used on the console without X11
-   * A pixelbook-eve keymap model is added to the xkeyboard-config to allow thep pixelbook
+   * A pixelbook-eve keymap model is added to the xkeyboard-config to allow the pixelbook
      keyboard to work properly, since its keyboard is a little different than most chromebooks.
  - Touchpad: libinput is used for both the touchpad and touchscreen devices, a few
    customizations are added both for Chromebooks in general and the Pixelbook
