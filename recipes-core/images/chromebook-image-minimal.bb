@@ -8,7 +8,7 @@ IMAGE_INSTALL = "packagegroup-core-boot ${CORE_IMAGE_EXTRA_INSTALL}"
 IMAGE_INSTALL_append = " chromebook-console-keymap kbd kbd-keymaps terminus-font-consolefonts ncurses bash"
 
 # Network Utils
-IMAGE_INSTALL_append = " dhcp-client iw iproute2 wpa-supplicant ${CHROMEBOOK_NETMANAGER} wireguard-tools bind bind-utils nmap mosh curl netcat tcpdump traceroute"
+IMAGE_INSTALL_append = " dhcp-client iw iproute2 wpa-supplicant ${CHROMEBOOK_NETMANAGER} wireguard-tools bind bind-utils nmap mosh curl netcat tcpdump traceroute links"
 
 # HW Utils
 IMAGE_INSTALL_append = " pciutils util-linux-lsblk util-linux-libuuid util-linux-lscpu util-linux-sfdisk util-linux-uuidd util-linux-uuidgen util-linux-uuidparse e2fsprogs-resize2fs coreutils "
