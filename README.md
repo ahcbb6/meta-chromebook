@@ -18,10 +18,22 @@ Please see the corresponding sections below for details.
 
 ### Build Status
 
-|Status   	| Pixelbook  	|X86-Chromebook   	|ARM64-Chromebook   	|
+**Master**
+
+|Kernel   	| Pixelbook  	|X86 Chromebook   	|Mediatek 8173 Chromebook   	|
 |---	|---	|---	|---	|
-|master  	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-eve?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=13&branchName=master)   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-x86?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=12&branchName=master)   	|   	|
-|zeus   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-eve?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=13&branchName=zeus)   	| [![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/meta-chromebook-eve?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=13&branchName=zeus)  	|   	|
+| Linux Yocto	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=master)| N/A |
+| Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=master)| N/A |
+| Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=22&branchName=master)|
+
+**Zeus**
+
+|Kernel   	| Pixelbook  	|X86 Chromebook   	|
+|---	|---	|---	|
+| Linux Yocto	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=zeus)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=zeus)|
+| Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=zeus)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=zeus)|
+| Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=zeus)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=zeus)|
+
 
 
 Table of Contents
