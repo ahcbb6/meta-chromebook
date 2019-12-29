@@ -3,37 +3,53 @@ HOMEPAGE = "https://chromium.googlesource.com/chromiumos/platform/vboot_referenc
 LICENSE = "BSD-3-Clause"
 SECTION = "firmware"
 
-SRC_URI = "git://chromium.googlesource.com/chromiumos/platform/vboot_reference.git;branch=master;protocol=https \
+SRC_URI = "git://chromium.googlesource.com/chromiumos/platform/vboot_reference.git;branch=${CHROMIUM_THIRDPARTY_BRANCH};protocol=https \
 "
 
-# Play it safe by using same version as MrChromeBox (doesnt build)
-#SRCREV = "bbdd62f9b030db7ad8eef789aaf58a7ff9a25656"
+SRCREV ?= "695c56dc50a59e5c9098c94f41b3d86b8f99baf1"
 
-# This one points to master at this point and at least, gbb_utility and crossystem work properly on EVE
-SRCREV = "eb10ebf76d78a7ac7cb6b66c6f1bba747d4e10ca"
+DEPENDS += "openssl xz libyaml pkgconfig-native util-linux"
+
 S = "${WORKDIR}/git"
+
+SRC_URI_append = " \
+    file://remove_fuzzer_option.patch \
+"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=562c740877935f40b262db8af30bca36"
 
 
 do_compile(){
-    oe_runmake futil
-    oe_runmake utils
+    oe_runmake all
 }
 
+# Specifically install what we need to avoid messing with the Makefile
 do_install() {
+
     install -d ${D}/${sbindir}/
-    install -m 755  ${S}/build/futility/futility ${D}/${sbindir}/gbb_utility
-    install -m 755  ${S}/build/utility/crossystem ${D}/${sbindir}/crossystem
+    install -d ${D}/${datadir}/devkeys
+
+    # Remove these for now since install wont allow recursive directories and we dont need them
+    rm -rf ${B}/tests/devkeys/android
+    rm -rf ${B}/tests/devkeys/uefi
+    install -m644 ${B}/tests/devkeys/* ${D}/${datadir}/devkeys
+    install -m 755  ${B}/build/utility/crossystem ${D}/${sbindir}/crossystem
+    install -m 755  ${B}/build/futility/futility ${D}/${sbindir}/futility
+    install -m 755  ${B}/build/utility/crossystem ${D}/${sbindir}/crossystem
+
+    # All these utilities have been merged on futility, although it still uses the name of
+    # the program being called as an argument, create symlinks for compatiblity
+    futil_symlinks="dump_fmap dump_kernel_config gbb_utility vbutil_firmware vbutil_kernel vbutil_key vbutil_keyblock"
+    cd  ${D}/${sbindir}/
+    for prog in $futil_symlinks
+    do
+        ln -sf futility $prog
+    done
+
 }
 
 
-# There are more binaries here that might be interesting, additional packages
-# can be added (e.b. enable_dev_boot)
-FILES_${PN} = ""
-FILES_${PN}-crossystem = "${sbindir}/crossystem"
-FILES_${PN}-gbb-utility = "${sbindir}/gbb_utility"
+FILES_${PN} += "${datadir}/devkeys/"
 
-DEPENDS += "openssl xz libyaml pkgconfig-native"
-
-PACKAGES += "${PN}-gbb-utility ${PN}-crossystem"
+# We need a native version to be able to sign chromium kernels for ARM boards
+BBCLASSEXTEND = "native"

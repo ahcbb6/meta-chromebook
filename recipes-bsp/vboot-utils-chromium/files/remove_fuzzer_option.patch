@@ -1,0 +1,12 @@
+Index: git/Makefile
+===================================================================
+--- git.orig/Makefile
++++ git/Makefile
+@@ -816,7 +816,6 @@ host_tools: utils futil tests
+ 
+ .PHONY: host_stuff
+ host_stuff: utillib hostlib \
+-	$(if $(filter x86_64,${ARCH}),fuzzers) \
+ 	$(if ${NO_BUILD_TOOLS},,cgpt host_tools)
+ 
+ .PHONY: clean
