@@ -17,7 +17,9 @@ IMAGE_INSTALL_append = " python3 python3-pip vim grep htop tmux"
 IMAGE_INSTALL_append = " packagegroup-core-x11 packagegroup-xfce-base gedit xfce4-appfinder xfce4-battery-plugin xfce4-netload-plugin gvfs gvfsd-trash thunar-volman xfce4-power-manager"
 
 # EXTRA GUI Stuff
-IMAGE_INSTALL_append = " gparted chromium-x11 ristretto"
+IMAGE_INSTALL_append_eve-chromebook = " gparted ristretto chromium-x11"
+IMAGE_INSTALL_append_x86-chromebook = " gparted ristretto chromium-x11"
+IMAGE_INSTALL_append_mediatek8173-chromebook = " gparted ristretto epiphany"
 
 DISTRO_FEATURES_append = " x11"
 
