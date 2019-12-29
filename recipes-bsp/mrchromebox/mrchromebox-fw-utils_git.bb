@@ -25,6 +25,6 @@ do_install() {
     install -m 0744 ${S}/sources.sh ${D}/opt/fw_scripts/
 }
 
-RDEPENDS_${PN} = "bash dmidecode coreboot-utils-cbfstool flashrom-chromium vboot-utils-chromium-gbb-utility vboot-utils-chromium-crossystem rootdev-chromium"
+RDEPENDS_${PN} = "bash dmidecode coreboot-utils-cbfstool flashrom-chromium vboot-utils-chromium rootdev-chromium"
 
 FILES_${PN} = "/opt/fw_scripts/"
