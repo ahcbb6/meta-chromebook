@@ -1,0 +1,298 @@
+trigger: none
+
+schedules:
+- cron: "0 6 * * *"
+  displayName: Daily build
+  branches:
+    include:
+    - master
+    - zeus
+  always: true
+
+
+jobs:
+- job: NativeTasksJob
+  timeoutInMinutes: 0
+
+  pool:
+    vmImage: 'ubuntu-18.04'
+
+  variables:
+    SSTATE_MIRRORS_ZEUS: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.0.1/PATH;downloadfilename=PATH'
+    SSTATE_MIRRORS_MASTER: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.1/PATH;downloadfilename=PATH'
+    DL_DIR: '/home/vsts/downloads/'
+    SSTATE_DIR: '/mnt/sstate-cache/'
+    SSTATE_MIRRORS_DIR: '/home/vsts/sstate_mirrors/'
+    MACHINE_X86: 'x86-chromebook'
+    MACHINE_PXL: 'eve-chromebook'
+    KERNEL_YOCTO: 'linux-yocto'
+    KERNEL_INTEL: 'linux-intel'
+    KERNEL_CHROMIUM: 'linux-chromium'
+    DEPLOY_ARTIFACTS_DIR: '/mnt/deploydir/'
+    PIPELINE_ID: $(System.DefinitionId)
+    BRANCH_TO_BUILD: $(Build.SourceBranchName)
+    MACHINE: $(MACHINE_PXL)
+    KERNEL: $(KERNEL_YOCTO)
+    SSTATE_PIPELINE: 18
+    SSTATE_PIPELINE_NATIVE: 22
+
+  steps:
+  - bash: |
+      sudo apt update
+      sudo apt purge ghc-\*
+      sudo apt purge hhvm zulu-\*
+      sudo apt purge google-chrome-stable
+      sudo apt purge firefox
+      sudo apt purge google-cloud-sdk
+      sudo apt purge dotnet\*
+      sudo apt purge openjdk-11-jre-headless
+      sudo apt purge mono\*
+      sudo apt purge php\*
+      sudo apt purge aspnetcore\*
+      sudo apt purge ubuntu-mono
+      sudo apt purge llvm\*
+      sudo apt purge moby\*
+      sudo apt purge ansible
+      sudo apt purge clang\*
+      sudo apt purge cabal\*
+      sudo apt purge \*\-icon-theme
+      sudo apt purge sphinxsearch
+      sudo apt purge poppler-data
+      sudo apt purge heroku
+      sudo apt purge samba\*
+      sudo apt purge powershell
+      sudo apt purge snapd
+      sudo apt purge libllvm\*
+      sudo apt purge libclang\*
+      sudo apt purge libicu\*
+      sudo apt purge liblldb\*
+      sudo apt purge vim\*
+      sudo apt purge \*doc\*
+      sudo apt purge man\*
+      sudo apt purge *\apache\*
+      sudo apt purge *\node\*
+      sudo apt purge *\yarn\*
+      sudo apt purge *\iso-codes\*
+      sudo apt purge *\kubectl\*
+      sudo apt purge *\linux-azure-headers\*
+      sudo apt purge *\shellcheck\*
+      sudo apt purge *\mercurial-common\*
+      sudo apt purge *\cmake\*
+      sudo apt purge fonts-dejavu-core* fonts-droid-fallback* fonts-liberation* fonts-noto-mono* fonts-ubuntu-console* gsfonts*
+      sudo DEBIAN_FRONTEND=noninteractive apt -yq remove --purge mysql\*
+      sudo DEBIAN_FRONTEND=noninteractive apt -yq remove --purge dbconfig-mysql\*
+      # sudo apt purge libclang\*
+      # sudo DEBIAN_FRONTEND=noninteractive apt-get -yq remove --purge mysql\*
+      # sudo DEBIAN_FRONTEND=noninteractive apt-get -yq purge mysql\*
+      # sudo DEBIAN_FRONTEND=noninteractive apt-get -yq remove dbconfig-mysql
+      #sudo apt purge ghc-8.0.2 ghc-8.2.2 ghc-8.4.4 ghc-8.6.2 ghc-8.6.3 ghc-8.6.4  ghc-8.6.5 ghc-8.8.1
+      # sudo apt-get clean
+      # sudo apt-get autoclean
+      sudo DEBIAN_FRONTEND=noninteractive apt -yq install durep wajig software-properties-common
+      sudo apt autoremove --purge
+      sudo apt autoclean
+      sudo apt clean
+      wajig large
+      df -h
+      # dpkg -S /usr/libx32/gconv
+      # dpkg -S /usr/local/aws/bin/
+      # dpkg -S /usr/share/fonts/truetype/dejavu
+      # dpkg -S /usr/local/aws/lib/python2.7/site-packages/botocore
+      # dpkg -S /usr/local/bin/terraform
+      # dpkg -S /usr/local/bin/node
+      # dpkg -S /usr/local/bin/tiller
+      # dpkg -S /usr/local/bin/kind
+      # dpkg -S /usr/local/bin/helm
+      # dpkg -S /usr/local/bin/terraform/stack
+      # dpkg -S /usr/local/bin/cmake-gui
+      # dpkg -S /usr/local/bin/ctest
+      # dpkg -S /usr/local/bin/docker-compose
+      # dpkg -S /usr/local/bin/cpack
+    displayName: 'Clean up container packages'
+
+
+  - bash: |
+      echo "Installing dependencies"
+      sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+      sudo apt update
+      sudo apt upgrade
+      until sudo apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+      build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+      pylint3 xterm
+      do
+        echo "Failed updating, trying again..."
+        sleep 1
+      done
+    continueOnError: false
+    displayName: 'Installing Dependencies'
+
+
+  - bash: |
+      echo "Installing GCC"
+      until sudo apt install gcc-9 g++-9
+      do
+        echo "Failed updating, trying again..."
+        sleep 1
+      done
+      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+    displayName: 'Installing Newer GCC'
+
+  - bash: |
+      sudo apt autoremove --purge
+      sudo apt autoclean
+      sudo apt clean
+      sudo apt-get clean
+      sudo apt-get autoclean
+      df -h
+    displayName: 'Clean up container packages'
+    
+  - bash: |
+      echo "Freeing up container space"
+      if [ "${DEBUG_PIPE}" == "1" ]; then
+            echo "Debug variables:"
+            echo Build.SourceBranch $(Build.SourceBranch)
+            echo Build.SourceBranchName $(Build.SourceBranchName)
+            echo System.PullRequest.SourceBranch $(System.PullRequest.SourceBranch)
+            echo System.PullRequest.TargetBranch $(System.PullRequest.TargetBranch)
+            echo "Free space before"
+            df -h
+            echo "Freeing up disk space"
+      fi
+      export TOFREE="/usr/share/dotnet /usr/local/share/boost/ /usr/local/share/rust /usr/share/rust \
+      /usr/local/lib/android/ /usr/local/go* /usr/lib/jvm /usr/lib/google-cloud-sdk /opt/* /var/cache/apt* \
+      /usr/lib/firefox /var/lib/apt/lists  \
+      /usr/lib/mono* \
+      /usr/lib/heroku* /usr/lib/firefox/browser /home/vsts/agents/2.150.3/externals/node10/bin \
+      /home/vsts/agents/2.150.3/externals/node/bin /home/vsts/agents/2.152.0/externals/node10/bin \
+      /home/vsts/agents/2.152.0/externals/node/bin /home/vsts/agents/2.152.1/externals/node10/bin \
+      /home/vsts/agents/2.152.1/externals/node/bin /home/vsts/agents/*.tgz /usr/share/gradle* /usr/share/miniconda/ \
+      /usr/share/icons/ /usr/share/man /usr/share/docs /usr/lib/mono /usr/lib/monodoc /usr/lib/php* /usr/lib/heroku \
+      /usr/lib/cgi-bin /home/vsts/agents/2.160.1/externals/node/bin /home/vsts/agents/2.160.1/externals/node10/bin \
+      /home/vsts/agents/2.162.0/externals/node/bin /home/vsts/agents/2.162.0/externals/node10/bin \
+      /home/vsts/agents/2.162.0/ /home/vsts/agents/2.160.1/ /home/vsts/agents/2.152.1/ /home/vsts/agents/2.152.0/ \
+      /home/vsts/agents/2.150.3/ /var/cache/apt/ /usr/local/n/ /usr/local/lib/node* /usr/local/share/vcpkg/ \
+      /usr/share/az_2.3* /usr/share/az_1*  /usr/local/share/ /usr/local/bin/ \
+      /usr/libx32/gconv /usr/lib32/gconv /usr/share/apache-maven-3.6.2/ \
+      "
+      #/usr/share/az* /usr/lib/azcopy*
+      # This cant be done in parallel
+      #dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n
+      #for i in ${TOFREE};do sudo rm -rf  $i; done;
+      # sudo swapoff /swapfile
+      # sudo rm -rf /swapfile
+      # sudo fallocate -l 4G /swapfile
+      # sudo chmod 600 /swapfile
+      # sudo mkswap /swapfile
+      # sudo swapon /swapfile
+      if [ "${DEBUG_PIPE}" == "1" ]; then
+            df -h
+            du -Sh / 2>/dev/null | sort -rh | head -n 200
+            du -akS -d 4  / 2>/dev/null | sort -n -r | head -n 50
+            echo "Creating downloads and sstate directories"
+      fi
+      # durep -td 3 /
+      # echo "after"
+      df -h
+      sudo mkdir $(DL_DIR)
+      sudo mkdir $(SSTATE_DIR)
+      sudo mkdir $(SSTATE_MIRRORS_DIR)
+      sudo mkdir $(DEPLOY_ARTIFACTS_DIR)
+      sudo chown vsts:vsts $(SSTATE_DIR)
+      sudo chown vsts:vsts $(DL_DIR)
+      sudo chown vsts:vsts $(SSTATE_MIRRORS_DIR)
+      sudo chown vsts:vsts ${DEPLOY_ARTIFACTS_DIR}
+    displayName: 'Clean up container'
+
+  - bash: |
+      cd ~/
+      echo "Cloning Yocto Project"
+      PULLREQBRANCH=$(System.PullRequest.TargetBranch)
+      if [ -z "$PULLREQBRANCH" ]; then
+        if [ "$(Build.SourceBranchName)" == "zeus" ]; then
+          YPBRANCH=$(Build.SourceBranchName);
+        else
+          YPBRANCH="master";
+        fi
+      else
+        YPBRANCH=$PULLREQBRANCH;
+      fi
+      echo "Building Yocto branch: $YPBRANCH"
+      git clone git://git.yoctoproject.org/poky -b $YPBRANCH
+      cd poky
+      git clone https://git.yoctoproject.org/git/meta-intel -b $YPBRANCH
+      git clone git://git.openembedded.org/meta-openembedded -b $YPBRANCH
+    continueOnError: false
+    displayName: 'Cloning Repositories'
+
+  - bash: |
+      # Add layers and create local.conf
+      echo "Creating proper bblayers.conf"
+      cd ~/poky
+      source oe-init-build-env
+      if [ "${BRANCH_TO_BUILD}" == "zeus" ]; then
+          echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_ZEUS}\"" >> ./conf/local.conf
+      else
+          echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_MASTER}\"" >> ./conf/local.conf
+      fi
+      echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> ./conf/local.conf
+      echo "DL_DIR = \"${DL_DIR}\"" >> ./conf/local.conf
+      bitbake-layers add-layer ../meta-intel
+      bitbake-layers add-layer ../meta-openembedded/meta-oe
+      bitbake-layers add-layer ../meta-openembedded/meta-python
+      bitbake-layers add-layer ../meta-openembedded/meta-networking
+      bitbake-layers add-layer $(Build.SourcesDirectory)
+
+      if [ "${DEBUG_PIPE}" == "1" ]; then
+          echo "bblayers.conf:"
+          cat conf/bblayers.conf
+      fi
+    continueOnError: false
+    displayName: 'Create build configuration'
+
+  # # Sstate from current branch being built
+  # - task: DownloadPipelineArtifact@2
+  #   inputs:
+  #     source: 'specific'
+  #     project: $(System.TeamProjectId)
+  #     pipeline: $(SSTATE_PIPELINE_NATIVE)
+  #     runVersion: 'latest'
+  #     artifact: 'SState_native'
+  #     targetPath: '$(SSTATE_MIRRORS_DIR)'
+  #     allowFailedBuilds: true
+  #     allowPartiallySucceededBuilds: true
+  #     continueOnError: true
+  #     # runBranch: 'master'
+  #     # buildVersionToDownload: 'specific'
+  #     # buildId: '549'
+  #     # buildVersionToDownload: 'latestFromBranch'
+  #     #     branchName: 'refs/heads/master-next'
+  #     # branchName: $(Build.SourceBranch)
+  #   condition: succeededOrFailed()
+
+
+  - bash: |
+      echo "Building native dependencies"
+      cd ~/poky
+      source oe-init-build-env
+      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL}\"" >> ./conf/local.conf
+      echo "Building with the following configuration:"
+      tail -n 10 conf/local.conf
+      bitbake chromebook-image-minimal -g
+      grep native pn-buildlist > nativerec
+      bitbake $(tr '\n' ' ' < nativerec)
+    condition: succeededOrFailed()
+    displayName: 'Build native dependencies for minimal chromebook image for $(MACHINE) - $(KERNEL)'
+
+
+  - publish: $(SSTATE_DIR)
+    artifact: 'SState_native'
+    condition: succeededOrFailed()
+
+  - bash: |
+      df -h
+      du -Sh / 2>/dev/null | sort -rh | head -n 200
+      du -akS -d 4  / 2>/dev/null | sort -n -r | head -n 50
+    condition: succeededOrFailed()
+    displayName: 'Check space after build'
