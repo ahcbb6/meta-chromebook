@@ -28,7 +28,9 @@ COMPATIBLE_HOST = "(i.86|x86_64).*-linux"
 
 # The CPU variant should be set on the machine.conf
 CHROMIUM_CPU_VARIANT ?= "kbl"
-BIOSNAME ?= "Poky-MrChromebox-SeaBIOS-${CHROMIUM_CPU_VARIANT}"
+BIOSNAME ?= "Meta-Chromebook-MrChromebox-SeaBIOS-${CHROMIUM_CPU_VARIANT}"
+
+SEABIOS_EXTRAVERSION = "${BIOSNAME}-$(date +"%Y.%m.%d")"
 
 do_configure(){
     cp ${S}/configs/.config-${CHROMIUM_CPU_VARIANT}-cros ${S}/.config
@@ -37,13 +39,13 @@ do_configure(){
 do_compile() {
     unset CPP
     unset CPPFLAGS
-    oe_runmake EXTRAVERSION=-${BIOSNAME}-`date +"%Y.%m.%d"`
+    oe_runmake EXTRAVERSION=-${SEABIOS_EXTRAVERSION}
 }
 
 
 do_compile_append (){
 
-    filename="${BIOSNAME}_`date +"%Y%m%d"`.bin"
+    filename="${SEABIOS_EXTRAVERSION}.bin"
     cbfstool ${filename} create -m x86 -s 0x00200000
     cbfstool ${filename} add-payload -f ./out/bios.bin.elf -n payload -b 0x0 -c lzma
     cbfstool ${filename} add -f ./out/vgabios.bin -n vgaroms/seavgabios.bin -t optionrom
@@ -55,7 +57,7 @@ do_compile_append (){
 }
 
 do_install() {
-    filename="${BIOSNAME}_`date +"%Y%m%d"`.bin"
+    filename="${SEABIOS_EXTRAVERSION}.bin"
     oe_runmake
     install -d ${D}/usr/share/firmware
     install -m 0644 ${filename}* ${D}/${datadir}/firmware/
