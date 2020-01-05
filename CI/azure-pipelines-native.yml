@@ -1,0 +1,22 @@
+trigger: none
+
+schedules:
+- cron: "0 6 * * *"
+  displayName: Daily build
+  branches:
+    include:
+    - master
+    - zeus
+  always: true
+
+variables:
+  - template: templates/variables.yml
+
+jobs:
+  - template: templates/build.yml
+    parameters:
+      pool:
+        vmImage: 'ubuntu-18.04'
+      buildtype: 'native'
+      machine: 'eve'
+      kernel: 'yocto'
