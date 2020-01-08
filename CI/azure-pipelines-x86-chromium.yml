@@ -4,7 +4,7 @@ trigger:
  - zeus
 
 schedules:
-- cron: "0 10 * * *"
+- cron: "0 7 * * *"
   displayName: Daily build
   branches:
     include:
