@@ -25,6 +25,9 @@ steps:
     if [ ${{ parameters.machine }} == "skylake" ]; then
       echo "##vso[task.setvariable variable=machine;]intel-skylake-64"
     fi
+    if [ ${{ parameters.machine }} == "mediatek8173" ]; then
+      echo "##vso[task.setvariable variable=machine;]mediatek8173-chromebook"
+    fi
   displayName: 'Create build configuration'
 - bash: |
     # Since we'll be upgrading later, we need to remove anything we dont want so we dont upgrade it either

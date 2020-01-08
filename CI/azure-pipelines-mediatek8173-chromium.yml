@@ -1,13 +1,17 @@
-trigger: none
+trigger:
+ - master
+ - master-next
+ - zeus
 
 schedules:
-- cron: "0 0 * * *"
+- cron: "0 9 * * *"
   displayName: Daily build
   branches:
     include:
     - master
     - zeus
   always: true
+
 
 variables:
   - template: templates/variables.yml
@@ -17,14 +21,7 @@ jobs:
     parameters:
       pool:
         vmImage: 'ubuntu-18.04'
-      buildtype: 'poky'
-      machine: 'skylake'
-      kernel: 'yocto'
-
-  - template: templates/build.yml
-    parameters:
-      pool:
-        vmImage: 'ubuntu-18.04'
-      buildtype: 'poky'
-      machine: 'mediatek8173'
+      buildtype: 'chromebook'
+      machine: 'mediatek-8173'
       kernel: 'chromium'
+

@@ -20,3 +20,11 @@ jobs:
       buildtype: 'native'
       machine: 'eve'
       kernel: 'yocto'
+
+  - template: templates/build.yml
+    parameters:
+      pool:
+        vmImage: 'ubuntu-18.04'
+      buildtype: 'native'
+      machine: 'mediatek8173'
+      kernel: 'chromium'
