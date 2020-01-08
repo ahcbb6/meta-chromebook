@@ -3,7 +3,7 @@ trigger:
  - master-next
 
 schedules:
-- cron: "0 9 * * *"
+- cron: "0 7 * * *"
   displayName: Daily build
   branches:
     include:
