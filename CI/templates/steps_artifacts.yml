@@ -15,7 +15,7 @@ steps:
       pipeline: $(SSTATE_PIPELINE_POKY)
       runVersion: 'latestFromBranch'
       runBranch: $(BUILDBRANCH)
-      artifact: 'SState'
+      artifact: $(POKYSSTATE)
       targetPath: $(SSTATE_MIRRORS_DIR)
 
 - ${{ if eq(parameters.buildtype, 'chromebook') }}:
@@ -28,7 +28,7 @@ steps:
       pipeline: $(SSTATE_PIPELINE_POKY)
       runVersion: 'latestFromBranch'
       runBranch: $(BUILDBRANCH)
-      artifact: 'SState'
+      artifact: $(POKYSSTATE)
       targetPath: $(SSTATE_MIRRORS_DIR)
 
   - task: DownloadPipelineArtifact@2

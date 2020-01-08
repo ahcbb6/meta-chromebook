@@ -72,6 +72,7 @@ steps:
   - bash: |
       echo "Moving artifacts to be deployed"
       rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
+      ls -l /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/
       # Kernel
       mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
       # QEMUboot
@@ -84,10 +85,16 @@ steps:
     displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL)'
 
 - ${{ if ne(parameters.buildtype, 'native') }}:
-    - publish: $(DEPLOY_ARTIFACTS_DIR)
-      artifact: $(MACHINE)-$(KERNEL)
-      condition: succeededOrFailed()
+  - publish: $(DEPLOY_ARTIFACTS_DIR)
+    artifact: $(MACHINE)-$(KERNEL)
+    condition: succeededOrFailed()
 
-- publish: $(SSTATE_DIR)
-  artifact: 'SState'
-  condition: succeededOrFailed()
+- ${{ if eq(parameters.buildtype, 'poky') }}:
+  - publish: $(SSTATE_DIR)
+    artifact: $(POKYSSTATE)
+    condition: succeededOrFailed()
+
+- ${{ if ne(parameters.buildtype, 'poky') }}:
+  - publish: $(SSTATE_DIR)
+    artifact: 'SState'
+    condition: succeededOrFailed()
