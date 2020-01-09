@@ -5,18 +5,6 @@ parameters:
   buildtype: ''
 
 steps:
-- ${{ if eq(parameters.buildtype, 'native') }}:
-  - task: DownloadPipelineArtifact@2
-    condition: succeededOrFailed()
-    continueOnError: true
-    inputs:
-      source: 'specific'
-      project: $(System.TeamProjectId)
-      pipeline: $(SSTATE_PIPELINE_POKY)
-      runVersion: 'latestFromBranch'
-      runBranch: $(BUILDBRANCH)
-      artifact: $(POKYSSTATE)
-      targetPath: $(SSTATE_MIRRORS_DIR)
 
 - ${{ if eq(parameters.buildtype, 'chromebook') }}:
   - task: DownloadPipelineArtifact@2
@@ -37,20 +25,8 @@ steps:
     inputs:
       source: 'specific'
       project: $(System.TeamProjectId)
-      pipeline: $(SSTATE_PIPELINE_NATIVE)
-      runVersion: 'latestFromBranch'
-      runBranch: $(BUILDBRANCH)
-      artifact: 'SState'
-      targetPath: $(SSTATE_MIRRORS_DIR)
-
-  - task: DownloadPipelineArtifact@2
-    condition: succeededOrFailed()
-    continueOnError: true
-    inputs:
-      source: 'specific'
-      project: $(System.TeamProjectId)
       pipeline: $(SSTATE_PIPELINE)
       runVersion: 'latestFromBranch'
       runBranch: $(BUILDBRANCH)
-      artifact: 'SState'
+      artifact: $(MACHINESSTATE)
       targetPath: $(SSTATE_MIRRORS_DIR)

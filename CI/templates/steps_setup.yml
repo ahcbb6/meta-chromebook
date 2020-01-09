@@ -19,14 +19,17 @@ steps:
     if [ ${{ parameters.machine }} == "eve" ]; then
       echo "##vso[task.setvariable variable=machine;]eve-chromebook"
       echo "##vso[task.setvariable variable=pokysstate;]Sstate_eve"
+      echo "##vso[task.setvariable variable=machinesstate;]Sstate_eve"
     fi
     if [ ${{ parameters.machine }} == "x86" ]; then
       echo "##vso[task.setvariable variable=machine;]x86-chromebook"
       echo "##vso[task.setvariable variable=pokysstate;]Sstate_x86"
+      echo "##vso[task.setvariable variable=machinesstate;]Sstate_x86"
     fi
     if [ ${{ parameters.machine }} == "mediatek8173" ]; then
       echo "##vso[task.setvariable variable=machine;]mediatek8173-chromebook"
       echo "##vso[task.setvariable variable=pokysstate;]Sstate_mediatek8173"
+      echo "##vso[task.setvariable variable=machinesstate;]Sstate_mediatek8173"
     fi
     if [ ${{ parameters.machine }} == "qemux8664" ]; then
       echo "##vso[task.setvariable variable=machine;]qemux86-64"

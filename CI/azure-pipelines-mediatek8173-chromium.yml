@@ -1,7 +1,6 @@
 trigger:
  - master
  - master-next
- - zeus
 
 schedules:
 - cron: "0 9 * * *"
@@ -9,7 +8,6 @@ schedules:
   branches:
     include:
     - master
-    - zeus
   always: true
 
 
@@ -22,6 +20,6 @@ jobs:
       pool:
         vmImage: 'ubuntu-18.04'
       buildtype: 'chromebook'
-      machine: 'mediatek-8173'
+      machine: 'mediatek8173'
       kernel: 'chromium'
 
