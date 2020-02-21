@@ -139,7 +139,7 @@ $ bitbake-layers add-layer ../meta-intel
 $ bitbake-layers add-layer ../meta-openembedded/meta-oe
 $ bitbake-layers add-layer ../meta-openembedded/meta-python
 $ bitbake-layers add-layer ../meta-openembedded/meta-networking
-$ bitbake-layers add-layer ../meta-openembedded/meta-chromebook
+$ bitbake-layers add-layer ../meta-chromebook
 ```
 3.- Add the required variables to your local.conf
 ```bash
