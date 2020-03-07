@@ -8,15 +8,15 @@ COMPATIBLE_MACHINE_eve-chromebook = "eve-chromebook"
 KMACHINE_x86-chromebook = "intel-corei7-64"
 COMPATIBLE_MACHINE_x86-chromebook = "x86-chromebook"
 
-SRCREV_machine_eve-chromebook ?= "ef54f0ac8d7caf7cc69f24b69de4633f796a4850"
-SRCREV_meta_eve-chromebook ?= "01aea505853474fc863c5efe8a18706f11d8197c"
-KBRANCH_eve-chromebook  = "v5.2/standard/base"
-LINUX_VERSION_eve-chromebook = "5.2.26"
+SRCREV_machine_eve-chromebook ?= "06356153574af37fccb30f5e632edeb54ddd1f7b"
+SRCREV_meta_eve-chromebook ?= "b8c82ba37370e4698ff0c42f3e54b8b4f2fb4ac0"
+KBRANCH_eve-chromebook  = "v5.4/standard/base"
+LINUX_VERSION_eve-chromebook = "5.4.23"
 
-SRCREV_machine_x86-chromebook ?= "ef54f0ac8d7caf7cc69f24b69de4633f796a4850"
-SRCREV_meta_x86-chromebook ?= "01aea505853474fc863c5efe8a18706f11d8197c"
-KBRANCH_x86-chromebook  = "v5.2/standard/base"
-LINUX_VERSION_x86-chromebook = "5.2.26"
+SRCREV_machine_x86-chromebook ?= "06356153574af37fccb30f5e632edeb54ddd1f7b"
+SRCREV_meta_x86-chromebook ?= "b8c82ba37370e4698ff0c42f3e54b8b4f2fb4ac0"
+KBRANCH_x86-chromebook  = "v5.4/standard/base"
+LINUX_VERSION_x86-chromebook = "5.4.23"
 
 
 SRC_URI_append_eve-chromebook = " file://chromium-x86-64-defconfig-R77-4.19-no-chromium.cfg \
