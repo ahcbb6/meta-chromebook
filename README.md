@@ -144,6 +144,7 @@ $ bitbake-layers add-layer ../meta-chromebook
 3.- Add the required variables to your local.conf
 ```bash
 $ echo "MACHINE = \"eve-chromebook\"" >> ./conf/local.conf
+$ echo "DISTRO = \"chronos\"" >> ./conf/local.conf
 ```
 4.- Build an image
 ```bash
