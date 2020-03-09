@@ -176,6 +176,7 @@ steps:
     fi
     echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> ./conf/local.conf
     echo "DL_DIR = \"${DL_DIR}\"" >> ./conf/local.conf
+    echo "DISTRO = \"${DISTRO}\"" >> ./conf/local.conf
     bitbake-layers add-layer ../meta-intel
     bitbake-layers add-layer ../meta-openembedded/meta-oe
     bitbake-layers add-layer ../meta-openembedded/meta-python

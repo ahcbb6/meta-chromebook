@@ -6,6 +6,7 @@ variables:
   SSTATE_MIRRORS_DIR: '/home/vsts/sstate_mirrors/'
   MACHINE_X86: 'x86-chromebook'
   MACHINE_PXL: 'eve-chromebook'
+  DISTRO: 'chronos'
   KERNEL_YOCTO: 'linux-yocto'
   KERNEL_INTEL: 'linux-intel'
   KERNEL_CHROMIUM: 'linux-chromium'
