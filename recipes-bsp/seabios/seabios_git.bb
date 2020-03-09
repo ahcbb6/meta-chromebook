@@ -7,8 +7,9 @@ SRC_URI = " \
     git://github.com/MrChromebox/SeaBIOS.git;branch=master;protocol=https \
     file://hostcc.patch \
     file://use_python_from_buildsystem.patch \
+    file://defconfig \
 "
-SRCREV = "1b63074bb336e36a5c8b83bc8a623a37a34e77a8"
+SRCREV = "fd938d56c8535dd30d6a2f88f09d86c485418846"
 
 S = "${WORKDIR}/git"
 
@@ -33,7 +34,10 @@ BIOSNAME ?= "Meta-Chromebook-MrChromebox-SeaBIOS-${CHROMIUM_CPU_VARIANT}"
 SEABIOS_EXTRAVERSION = "${BIOSNAME}-$(date +"%Y.%m.%d")"
 
 do_configure(){
-    cp ${S}/configs/.config-${CHROMIUM_CPU_VARIANT}-cros ${S}/.config
+    # Keep the following in case its solved in the repo
+    # cp ${S}/configs/.config-${CHROMIUM_CPU_VARIANT}-cros ${S}/.config
+    # Use a defconfig that contains new values to make kconf happy
+    cp ${WORKDIR}/defconfig ${S}/.config
 }
 
 do_compile() {
