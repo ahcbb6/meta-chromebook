@@ -33,6 +33,8 @@ BIOSNAME ?= "Meta-Chromebook-MrChromebox-SeaBIOS-${CHROMIUM_CPU_VARIANT}"
 
 SEABIOS_EXTRAVERSION = "${BIOSNAME}-$(date +"%Y.%m.%d")"
 
+PARALLEL_MAKE = ""
+
 do_configure(){
     # Keep the following in case its solved in the repo
     # cp ${S}/configs/.config-${CHROMIUM_CPU_VARIANT}-cros ${S}/.config
