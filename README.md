@@ -26,6 +26,14 @@ Please see the corresponding sections below for details.
 | Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=master)| N/A |
 | Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=master)|
 
+**Dunfell**
+
+|Kernel   	| Pixelbook  	|X86 Chromebook   	|Mediatek 8173 Chromebook   	|
+|---	|---	|---	|---	|
+| Linux Yocto	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=dunfell)| N/A |
+| Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=dunfell)| N/A |
+| Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=dunfell)|
+
 **Zeus**
 
 |Kernel   	| Pixelbook  	|X86 Chromebook   	|
