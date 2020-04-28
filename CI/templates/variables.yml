@@ -1,6 +1,7 @@
 variables:
   SSTATE_MIRRORS_ZEUS: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.0.2/PATH;downloadfilename=PATH'
-  SSTATE_MIRRORS_MASTER: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.1/PATH;downloadfilename=PATH'
+  SSTATE_MIRRORS_DUNFELL: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.1/PATH;downloadfilename=PATH'
+  SSTATE_MIRRORS_MASTER: 'file://.* file:///home/vsts/sstate_mirrors/PATH \n file://.* http://sstate.yoctoproject.org/3.2/PATH;downloadfilename=PATH'
   DL_DIR: '/home/vsts/downloads/'
   SSTATE_DIR: '/home/vsts/sstate-cache/'
   SSTATE_MIRRORS_DIR: '/home/vsts/sstate_mirrors/'

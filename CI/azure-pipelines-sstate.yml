@@ -6,6 +6,7 @@ schedules:
   branches:
     include:
     - master
+    - dunfell
     - zeus
   always: true
 

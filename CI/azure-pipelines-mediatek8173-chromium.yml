@@ -1,5 +1,6 @@
 trigger:
  - master
+ - dunfell
  - master-next
 
 schedules:
@@ -8,6 +9,7 @@ schedules:
   branches:
     include:
     - master
+    - dunfell
   always: true
 
 
