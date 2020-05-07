@@ -1,6 +1,5 @@
 ## Chromebook layer compatible with OpenEmbedded/Yocto Project
 
-
 Chromebooks are widely used nowadays, providing quality hardware mostly
 used for lightweight workloads.
 
@@ -20,28 +19,70 @@ Please see the corresponding sections below for details.
 
 **Master**
 
-|Kernel   	| Pixelbook  	|X86 Chromebook   	|Mediatek 8173 Chromebook   	|
-|---	|---	|---	|---	|
-| Linux Yocto	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=master)| N/A |
-| Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=master)| N/A |
-| Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=master)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=master)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=master)|
+| Kernel | Pixelbook | X86 Chromebook | Mediatek 8173 Chromebook |
+|--------|-----------|----------------|--------------------------|
+| Linux Yocto | [![Status][master-eve-yocto-badge]][master-eve-yocto-pipeline] | [![Status][master-x86-yocto-badge]][master-x86-yocto-pipeline] | N/A |
+| Linux Intel | [![Status][master-eve-intel-badge]][master-eve-intel-pipeline] | [![Status][master-x86-intel-badge]][master-x86-intel-pipeline] | N/A |
+| Linux Chromium | [![Status][master-eve-chromium-badge]][master-eve-chromium-pipeline] | [![Status][master-x86-chromium-badge]][master-x86-chromium-pipeline] | [![Status][master-mediatek8173-chromium-badge]][master-mediatek8173-chromium-pipeline] |
+
+[master-eve-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=master
+[master-eve-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=master
+[master-eve-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=master
+[master-eve-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=master
+[master-eve-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=master
+[master-eve-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=master
+[master-x86-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=master
+[master-x86-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=master
+[master-x86-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=master
+[master-x86-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=master
+[master-x86-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=master
+[master-x86-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=master
+[master-mediatek8173-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=master
+[master-mediatek8173-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=master
 
 **Dunfell**
 
-|Kernel   	| Pixelbook  	|X86 Chromebook   	|Mediatek 8173 Chromebook   	|
-|---	|---	|---	|---	|
-| Linux Yocto	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=dunfell)| N/A |
-| Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=dunfell)| N/A |
-| Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=dunfell)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=dunfell)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=dunfell)|
+| Kernel | Pixelbook | X86 Chromebook | Mediatek 8173 Chromebook |
+|--------|-----------|----------------|--------------------------|
+| Linux Yocto | [![Status][dunfell-eve-yocto-badge]][dunfell-eve-yocto-pipeline] | [![Status][dunfell-x86-yocto-badge]][dunfell-x86-yocto-pipeline] | N/A |
+| Linux Intel | [![Status][dunfell-eve-intel-badge]][dunfell-eve-intel-pipeline] | [![Status][dunfell-x86-intel-badge]][dunfell-x86-intel-pipeline] | N/A |
+| Linux Chromium | [![Status][dunfell-eve-chromium-badge]][dunfell-eve-chromium-pipeline] | [![Status][dunfell-x86-chromium-badge]][dunfell-x86-chromium-pipeline] | [![Status][dunfell-mediatek8173-chromium-badge]][dunfell-mediatek8173-chromium-pipeline] |
+
+[dunfell-eve-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=dunfell
+[dunfell-eve-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=dunfell
+[dunfell-eve-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=dunfell
+[dunfell-eve-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=dunfell
+[dunfell-eve-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=dunfell
+[dunfell-eve-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=dunfell
+[dunfell-x86-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=dunfell
+[dunfell-x86-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=dunfell
+[dunfell-x86-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=dunfell
+[dunfell-x86-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=dunfell
+[dunfell-x86-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=dunfell
+[dunfell-x86-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=dunfell
+[dunfell-mediatek8173-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=dunfell
+[dunfell-mediatek8173-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=dunfell
 
 **Zeus**
 
-|Kernel   	| Pixelbook  	|X86 Chromebook   	|
-|---	|---	|---	|
-| Linux Yocto	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=zeus)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=zeus)|
-| Linux Intel   |[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=zeus)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=zeus)|
-| Linux Chromium   	|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=zeus)|[![Build Status](https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=zeus)](https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=zeus)|
+| Kernel | Pixelbook | X86 Chromebook | Mediatek 8173 Chromebook |
+|--------|-----------|----------------|--------------------------|
+| Linux Yocto | [![Status][zeus-eve-yocto-badge]][zeus-eve-yocto-pipeline] | [![Status][zeus-x86-yocto-badge]][zeus-x86-yocto-pipeline] | N/A |
+| Linux Intel | [![Status][zeus-eve-intel-badge]][zeus-eve-intel-pipeline] | [![Status][zeus-x86-intel-badge]][zeus-x86-intel-pipeline] | N/A |
+| Linux Chromium | [![Status][zeus-eve-chromium-badge]][zeus-eve-chromium-pipeline] | [![Status][zeus-x86-chromium-badge]][zeus-x86-chromium-pipeline] | N/A |
 
+[zeus-eve-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=zeus
+[zeus-eve-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=zeus
+[zeus-eve-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=zeus
+[zeus-eve-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=zeus
+[zeus-eve-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=zeus
+[zeus-eve-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=zeus
+[zeus-x86-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=zeus
+[zeus-x86-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=zeus
+[zeus-x86-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=zeus
+[zeus-x86-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=zeus
+[zeus-x86-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=zeus
+[zeus-x86-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=zeus
 
 
 Table of Contents
