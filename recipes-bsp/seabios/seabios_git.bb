@@ -8,7 +8,9 @@ SRC_URI = " \
     file://hostcc.patch \
     file://defconfig \
 "
-SRCREV = "fd938d56c8535dd30d6a2f88f09d86c485418846"
+
+# SRCREV = "a18aab36b4b1448112e8446f53d60c5b06ec63b6"
+SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/git"
 
