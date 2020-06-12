@@ -20,3 +20,5 @@ SRC_URI_append = " file://chromium-x86-64-defconfig-R77-4.19-no-unset.cfg \
     file://extra_pixelbook-chromium.cfg \
 "
 
+# Kernel bypasses CFLAGS
+KERNEL_CC_append = " -Wno-zero-length-bounds -Wno-array-bounds -Wno-builtin-declaration-mismatch"
