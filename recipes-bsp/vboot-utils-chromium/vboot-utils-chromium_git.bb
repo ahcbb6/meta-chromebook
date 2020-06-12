@@ -18,6 +18,7 @@ SRC_URI_append = " \
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=562c740877935f40b262db8af30bca36"
 
+CFLAGS_append = " -Wno-array-bounds"
 
 do_compile(){
     oe_runmake all
