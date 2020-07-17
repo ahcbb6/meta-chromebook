@@ -20,7 +20,7 @@ jobs:
   - template: templates/build.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'chromebook'
       machine: 'mediatek8173'
       kernel: 'chromium'

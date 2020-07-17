@@ -17,18 +17,18 @@ jobs:
   - template: templates/steps_sstate.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'sstate'
       machine: 'eve'
   - template: templates/steps_sstate.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'sstate'
       machine: 'x86'
   - template: templates/steps_sstate.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'sstate'
       machine: 'mediatek8173'
