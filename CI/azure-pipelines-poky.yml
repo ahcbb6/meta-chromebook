@@ -17,7 +17,7 @@ jobs:
   - template: templates/build.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'poky'
       machine: 'qemux8664'
       kernel: 'yocto'
@@ -25,7 +25,7 @@ jobs:
   - template: templates/build.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'poky'
       machine: 'mediatek8173'
       kernel: 'chromium'
@@ -33,7 +33,7 @@ jobs:
   - template: templates/build.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'poky'
       machine: 'eve'
       kernel: 'yocto'
@@ -41,7 +41,7 @@ jobs:
   - template: templates/build.yml
     parameters:
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'ubuntu-20.04'
       buildtype: 'poky'
       machine: 'x86'
       kernel: 'intel'
