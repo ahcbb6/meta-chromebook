@@ -128,8 +128,9 @@ steps:
     /home/vsts/agents/2.162.0/ /home/vsts/agents/2.160.1/ /home/vsts/agents/2.152.1/ /home/vsts/agents/2.152.0/ \
     /usr/share/az_2.3* /usr/share/az_1* \
     /usr/local/n/ /usr/local/lib/node* /usr/local/share/ /usr/local/bin/ \
-    /usr/libx32/gconv /usr/lib32/gconv \
-    "
+    /usr/libx32/gconv /usr/lib32/gconv /usr/share/swift/ /usr/local/julia1.4.2/ \
+    /home/vsts/agents/2.171.1/ /usr/local/aws-cli/ /usr/local/doc/  /home/linuxbrew/.linuxbrew/ \
+    /usr/share/doc/ /usr/share/vim/ "
     # This cant be done in parallel
     for i in ${TOFREE};do sudo rm -rf $i; done;
     # Create a smaller swapfile to save space
