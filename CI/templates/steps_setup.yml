@@ -67,9 +67,9 @@ steps:
 
 - bash: |
     # Make sure we still have add-apt-repository
-    sudo DEBIAN_FRONTEND=noninteractive apt install software-properties-common
-    sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-    sudo DEBIAN_FRONTEND=noninteractive apt update
+    # sudo DEBIAN_FRONTEND=noninteractive apt install software-properties-common
+    # sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+    # sudo DEBIAN_FRONTEND=noninteractive apt update
     sudo DEBIAN_FRONTEND=noninteractive apt upgrade
     # Dependencies from the Yocto Quickstart
     until sudo DEBIAN_FRONTEND=noninteractive apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
@@ -84,12 +84,13 @@ steps:
   displayName: 'Upgrade and install dependencies'
 
 - bash: |
-    until sudo DEBIAN_FRONTEND=noninteractive apt install gcc-9 g++-9
-    do
-      echo "Failed updating, trying again..."
-      sleep 1
-    done
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+    # until sudo DEBIAN_FRONTEND=noninteractive apt install gcc-9 g++-9
+    # do
+    #   echo "Failed updating, trying again..."
+    #   sleep 1
+    # done
+    # sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
+    echo "GCC is already up to date"
   displayName: 'Install Newer GCC'
 
 - bash: |
