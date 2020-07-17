@@ -42,23 +42,23 @@ steps:
 - bash: |
     # Since we'll be upgrading later, we need to remove anything we dont want so we dont upgrade it either
     sudo DEBIAN_FRONTEND=noninteractive apt update
-    sudo DEBIAN_FRONTEND=noninteractive apt purge -yq ghc-\* hhvm zulu-\* google-chrome-stable firefox google-cloud-sdk dotnet\* openjdk-11-jre-headless \
-    mono\* php\* aspnetcore\* ubuntu-mono llvm\* moby\* ansible clang\* cabal\* \*\-icon-theme sphinxsearch \
-    poppler-data heroku samba\* powershell snapd libclang\* libicu\* liblldb\* vim\* \
-    \*doc\* man\* *\apache\* *\node\* \*yarn\* \*iso-codes\* \*kubectl\* \*linux-azure-headers\* \
-    \*shellcheck\* \*mercurial-common\* \*cmake\* fonts-dejavu-core* fonts-droid-fallback* \
-    fonts-noto-mono* fonts-ubuntu-console* gsfonts* >/dev/null
-    # These have to be removed in a different step due to dependency issues
-    sudo DEBIAN_FRONTEND=noninteractive apt purge -yq libllvm\* >/dev/null
-    sudo DEBIAN_FRONTEND=noninteractive apt -yq remove --purge mysql\* >/dev/null
-    sudo DEBIAN_FRONTEND=noninteractive apt -yq remove --purge dbconfig-mysql\* >/dev/null
-    # Tools to debug space usage
-    sudo DEBIAN_FRONTEND=noninteractive apt -yq install durep wajig >/dev/null
+    sudo DEBIAN_FRONTEND=noninteractive apt purge google-chrome-stable firefox google-cloud-sdk heroku snapd bazel '?name(ghc.*)' \
+    '?name(llvm-8.*)' podman '?name(adoptopenjdk.*)' '?name(dotnet-sdk.*)' '?name(mysql.*)' '?name(mono.*)' '?name(moby.*)' \
+    hhvm ansible '?name(azure-cli.*)' '?name(llvm-9.*)' '?name(llvm-6.*)' '?name(dotnet-runtime.*)' '?name(libllvm8.*)' \
+    '?name(libllvm6.*)' '?name(libllvm8.*)' '?name(libllvm9.*)' '?name(libllvm8.*)' '?name(postgresql.*)' '?name(libclang-common-6.*)' \
+    '?name(libclang-common-8.*)' '?name(libclang-common-9.*)' '?name(libldb.*)' '?name(clang-6.*)' '?name(libicu.*)' \
+    '?name(cabal.*)' '?name(gcc-8.*)' '?name(g++-8-.*)' '?name(gcc-7.*)' '?name(g++-7.*)' '?name(cpp-7.*)' '?name(cpp-8.*)' \
+    '?name(gfortran.*)' '?name(buildah.*)' '?name(ruby2.*)' '?name(skopeo.*)' '?name(openjdk-11-jre-headless.*)' \
+    '?name(vim.*)' '?name(mercurial.*)' \
+    linux-azure-tools-5.4.0-1019 linux-modules-5.4.0-1019-azure linux-azure-headers-5.4.0-1019 > /dev/null
+    # Keep one version of azure stuff installed (newest)
     # Remove unneeded dependencies leftover
     sudo DEBIAN_FRONTEND=noninteractive apt autoremove --purge >/dev/null
     sudo DEBIAN_FRONTEND=noninteractive apt autoclean >/dev/null
     sudo DEBIAN_FRONTEND=noninteractive apt clean >/dev/null
     if [ "${DEBUG_PIPE}" == "1" ]; then
+      # Tools to debug space usage
+      sudo DEBIAN_FRONTEND=noninteractive apt -yq install durep wajig >/dev/null
       wajig large
       df -h
     fi
