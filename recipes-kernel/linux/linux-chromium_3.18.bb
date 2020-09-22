@@ -26,6 +26,13 @@ SRC_URI_append_mediatek8173-chromebook = " file://defconfig \
     file://fix_modules.cfg \
 "
 
+# Workaround to linux-chromium that expects an environment variable and for some
+# reason it doesnt expand it on the sources, then, while running kernel_configcheck
+# the python script isnt able to expand it
+do_configure_append(){
+    sed -i 's/$WIFIVERSION//g' ${S}/drivers/net/Kconfig
+    sed -i 's/$WIFIVERSION//g' ${S}/net/Kconfig
+}
 
 do_compile_prepend(){
     # Allow GCC9 to build
