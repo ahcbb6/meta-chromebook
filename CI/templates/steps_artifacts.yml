@@ -18,6 +18,8 @@ steps:
       runBranch: $(BUILDBRANCH)
       artifact: $(POKYSSTATE)
       targetPath: $(SSTATE_MIRRORS_DIR)
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: true
 
   - task: DownloadPipelineArtifact@2
     condition: succeededOrFailed()
@@ -30,3 +32,5 @@ steps:
       runBranch: $(BUILDBRANCH)
       artifact: $(MACHINESSTATE)
       targetPath: $(SSTATE_MIRRORS_DIR)
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: true
