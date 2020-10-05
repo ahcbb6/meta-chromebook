@@ -1,8 +1,8 @@
 steps:
 - bash: |
-    if [ ${{ parameters.build_branch }} == "zeus" ]; then
-      echo "##vso[task.setvariable variable=buildbranch;]refs/heads/zeus"
-      echo "##vso[task.setvariable variable=branchname;]zeus"
+    if [ ${{ parameters.build_branch }} == "gatesgarth" ]; then
+      echo "##vso[task.setvariable variable=buildbranch;]refs/heads/gatesgarth"
+      echo "##vso[task.setvariable variable=branchname;]gatesgarth"
     elif [ ${{ parameters.build_branch }} == "dunfell" ]; then
       echo "##vso[task.setvariable variable=buildbranch;]refs/heads/dunfell"
       echo "##vso[task.setvariable variable=branchname;]dunfell"
@@ -175,8 +175,8 @@ steps:
     echo "Creating proper bblayers.conf"
     cd ~/poky
     source oe-init-build-env
-    if [ "${BRANCHNAME}" == "zeus" ]; then
-      echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_ZEUS}\"" >> ./conf/local.conf
+    if [ "${BRANCHNAME}" == "gatesgarth" ]; then
+      echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_GATESGARTH}\"" >> ./conf/local.conf
     elif [ "${BRANCHNAME}" == "dunfell" ]; then
       echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_DUNFELL}\"" >> ./conf/local.conf
     else
