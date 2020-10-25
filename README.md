@@ -63,26 +63,6 @@ Please see the corresponding sections below for details.
 [dunfell-mediatek8173-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/arm/mediatek8173?branchName=dunfell
 [dunfell-mediatek8173-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=28&branchName=dunfell
 
-**Zeus**
-
-| Kernel | Pixelbook | X86 Chromebook | Mediatek 8173 Chromebook |
-|--------|-----------|----------------|--------------------------|
-| Linux Yocto | [![Status][zeus-eve-yocto-badge]][zeus-eve-yocto-pipeline] | [![Status][zeus-x86-yocto-badge]][zeus-x86-yocto-pipeline] | N/A |
-| Linux Intel | [![Status][zeus-eve-intel-badge]][zeus-eve-intel-pipeline] | [![Status][zeus-x86-intel-badge]][zeus-x86-intel-pipeline] | N/A |
-| Linux Chromium | [![Status][zeus-eve-chromium-badge]][zeus-eve-chromium-pipeline] | [![Status][zeus-x86-chromium-badge]][zeus-x86-chromium-pipeline] | N/A |
-
-[zeus-eve-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-yocto?branchName=zeus
-[zeus-eve-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=14&branchName=zeus
-[zeus-eve-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-intel?branchName=zeus
-[zeus-eve-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=15&branchName=zeus
-[zeus-eve-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/eve/eve-chromium?branchName=zeus
-[zeus-eve-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=16&branchName=zeus
-[zeus-x86-yocto-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-yocto?branchName=zeus
-[zeus-x86-yocto-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=19&branchName=zeus
-[zeus-x86-intel-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-intel?branchName=zeus
-[zeus-x86-intel-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=20&branchName=zeus
-[zeus-x86-chromium-badge]: https://dev.azure.com/aehs29/meta-chromebook/_apis/build/status/x86/x86-chromium?branchName=zeus
-[zeus-x86-chromium-pipeline]: https://dev.azure.com/aehs29/meta-chromebook/_build/latest?definitionId=21&branchName=zeus
 
 
 Table of Contents
@@ -175,11 +155,11 @@ III. Usage
 =============================================
 1.- Clone the required repositories
 ```bash
-$ git clone https://git.yoctoproject.org/git/poky -b zeus
+$ git clone https://git.yoctoproject.org/git/poky -b dunfell
 $ cd poky
-$ git clone https://git.yoctoproject.org/git/meta-intel -b zeus
-$ git clone https://git.openembedded.org/meta-openembedded -b zeus
-$ git clone https://github.com/aehs29/meta-chromebook.git -b zeus
+$ git clone https://git.yoctoproject.org/git/meta-intel -b dunfell
+$ git clone https://git.openembedded.org/meta-openembedded -b dunfell
+$ git clone https://github.com/aehs29/meta-chromebook.git -b dunfell
 ```
 2.- Add layers to your *bblayers.conf*:
 ```bash
@@ -212,7 +192,7 @@ it on /usr/share/firmware/ and the necessary tools to flash it are also provided
 
 6.- Login as chronospoky (Reference to the chronos user used by Chromebooks running Chrome/Chromium OS)
 ```bash
-Poky (Yocto Project Reference Distro) 3.0 eve-chromebook /dev/ttyS0
+Chronos (Poky based Linux for Chromebooks) 1.0 eve-chromebook /dev/ttyS0
 eve-chromebook login: chronospoky
 ```
 
