@@ -5,7 +5,7 @@ CHROMEBOOK_NETMANAGER ?= "connman connman-client connman-plugin-vpn-openvpn conn
 IMAGE_INSTALL = "packagegroup-core-boot ${CORE_IMAGE_EXTRA_INSTALL}"
 
 # Console Utils
-IMAGE_INSTALL_append = " chromebook-console-keymap kbd kbd-keymaps terminus-font-consolefonts ncurses bash zile"
+IMAGE_INSTALL_append = " chromebook-console-keymap kbd kbd-keymaps terminus-font-consolefonts ncurses bash emacs-minimal tzdata"
 
 # Network Utils
 IMAGE_INSTALL_append = " dhcpcd iw iproute2 wpa-supplicant ${CHROMEBOOK_NETMANAGER} wireguard-tools bind bind-utils nmap mosh curl netcat tcpdump traceroute links openssh-misc rsync"
