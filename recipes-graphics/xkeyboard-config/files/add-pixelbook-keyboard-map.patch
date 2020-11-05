@@ -1,16 +1,16 @@
-Index: xkeyboard-config-2.27/symbols/inet
+Index: xkeyboard-config-2.31/symbols/inet
 ===================================================================
---- xkeyboard-config-2.27.orig/symbols/inet
-+++ xkeyboard-config-2.27/symbols/inet
-@@ -1880,6 +1880,7 @@ xkb_symbols "htcdream" {
- 	modifier_map Shift { <LFSH>, <RTSH> };
+--- xkeyboard-config-2.31.orig/symbols/inet
++++ xkeyboard-config-2.31/symbols/inet
+@@ -1867,6 +1867,7 @@ xkb_symbols "pc105" {
+     include "inet(media_nav_acpi_common)"
  };
  
 +// Generic Chromebook
  partial alphanumeric_keys
  xkb_symbols "chromebook" {
  	include "level3(ralt_switch)"
-@@ -1901,6 +1902,30 @@ xkb_symbols "chromebook" {
+@@ -1888,6 +1889,30 @@ xkb_symbols "chromebook" {
          key <LWIN> {    [ Super_L, Super_L, Caps_Lock, Super_L ] };
  };
  
@@ -41,11 +41,11 @@ Index: xkeyboard-config-2.27/symbols/inet
  partial alphanumeric_keys
  xkb_symbols "teck227" {
      include "inet(media_nav_common)"
-Index: xkeyboard-config-2.27/rules/evdev.xml
+Index: xkeyboard-config-2.31/rules/evdev.xml
 ===================================================================
---- xkeyboard-config-2.27.orig/rules/evdev.xml
-+++ xkeyboard-config-2.27/rules/evdev.xml
-@@ -1325,6 +1325,13 @@
+--- xkeyboard-config-2.31.orig/rules/evdev.xml
++++ xkeyboard-config-2.31/rules/evdev.xml
+@@ -1332,6 +1332,13 @@
      </model>
      <model>
        <configItem>
@@ -59,11 +59,11 @@ Index: xkeyboard-config-2.27/rules/evdev.xml
         <name>teck227</name>
         <description>Truly Ergonomic Computer Keyboard Model 227 (Wide Alt keys)</description>
         <vendor>Megawin Technology</vendor>
-Index: xkeyboard-config-2.27/rules/base.m_s.part
+Index: xkeyboard-config-2.31/rules/0026-base.m_s.part
 ===================================================================
---- xkeyboard-config-2.27.orig/rules/base.m_s.part
-+++ xkeyboard-config-2.27/rules/base.m_s.part
-@@ -36,6 +36,7 @@
+--- xkeyboard-config-2.31.orig/rules/0026-base.m_s.part
++++ xkeyboard-config-2.31/rules/0026-base.m_s.part
+@@ -37,6 +37,7 @@
    ltcd          =       +inet(logicda)
    microsoftccurve2k =   +inet(microsoftprooem)
    microsoftpro  =       +inet(media_nav_acpi_common)
@@ -71,11 +71,12 @@ Index: xkeyboard-config-2.27/rules/base.m_s.part
    precision_m   =       +inet(media_nav_common)
    scorpius      =       +inet(media_nav_acpi_common)
    sp_inet       =       +inet(media_nav_acpi_common)
-Index: xkeyboard-config-2.27/rules/evdev.m_s.part
+Index: xkeyboard-config-2.31/rules/0026-evdev.m_s.part
 ===================================================================
---- xkeyboard-config-2.27.orig/rules/evdev.m_s.part
-+++ xkeyboard-config-2.27/rules/evdev.m_s.part
-@@ -1,4 +1,5 @@
+--- xkeyboard-config-2.31.orig/rules/0026-evdev.m_s.part
++++ xkeyboard-config-2.31/rules/0026-evdev.m_s.part
+@@ -1,5 +1,6 @@
+ ! model		=	symbols
    $evdevkbds    =   +inet(evdev)+inet(%m)
    chromebook    =   +inet(evdev)+inet(chromebook)
 +  pixelbook-eve =   +inet(evdev)+inet(pixelbook-eve)
