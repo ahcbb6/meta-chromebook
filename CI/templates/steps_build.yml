@@ -15,83 +15,30 @@ steps:
       echo "${EXTRA_LOCALCONF}" >> ./conf/local.conf
       echo "Building with the following configuration:"
       tail -n 10 conf/local.conf
-      bitbake chromebook-image-minimal
+      if [ -z $(BBTARGET) ]; then
+        bitbake chromebook-image-minimal
+      else
+        bitbake $(BBTARGET)
+      fi
     condition: succeededOrFailed()
     displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL)'
 
-- ${{ if eq(parameters.buildtype, 'poky') }}:
-  - bash: |
-      echo "Building minimal image"
-      cd ~/poky
-      source oe-init-build-env
-      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
-      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL}\"" >> ./conf/local.conf
-      echo "Building with the following configuration:"
-      tail -n 10 conf/local.conf
-      bitbake core-image-minimal
-    condition: succeededOrFailed()
-    displayName: 'Build minimal image for $(MACHINE) - $(KERNEL)'
 
 - bash: |
     df -h
   condition: succeededOrFailed()
   displayName: 'Check space after build'
 
-- ${{ if eq(parameters.buildtype, 'chromebook') }}:
-  - ${{ if eq(parameters.machine, 'mediatek8173') }}:
-    - bash: |
-        echo "Moving artifacts to be deployed"
-        rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
-        # RootFS
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.tar.gz ${DEPLOY_ARTIFACTS_DIR}
-        # fitImage
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/*.kpart ${DEPLOY_ARTIFACTS_DIR}
-        # Modules
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
-      condition: succeededOrFailed()
-      displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL)'
-
-  - ${{ if ne(parameters.machine, 'mediatek8173') }}:
-    - bash: |
-        echo "Moving artifacts to be deployed"
-        rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
-        # Kernel
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
-        # QEMUboot
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
-        # WIC
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/chromebook-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
-        # Modules
-        mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
-      condition: succeededOrFailed()
-      displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL)'
-
-- ${{ if eq(parameters.buildtype, 'poky') }}:
-  - bash: |
-      echo "Moving artifacts to be deployed"
-      rm -rf ${DEPLOY_ARTIFACTS_DIR}/*
-      ls -l /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/
-      # Kernel
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/bzImage--*.bin ${DEPLOY_ARTIFACTS_DIR}
-      # QEMUboot
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/core-image-*-${MACHINE}-*.qemuboot.conf ${DEPLOY_ARTIFACTS_DIR}
-      # WIC
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/core-image-*-${MACHINE}-*.rootfs.wic ${DEPLOY_ARTIFACTS_DIR}
-      # Modules
-      mv /home/vsts/poky/build/tmp/deploy/images/${MACHINE}/modules--*.tgz ${DEPLOY_ARTIFACTS_DIR}
-    condition: succeededOrFailed()
-    displayName: 'Moving Artifacts - $(MACHINE) - $(KERNEL)'
-
-- publish: $(DEPLOY_ARTIFACTS_DIR)
-  artifact: $(MACHINE)-$(KERNEL)
+- bash: |
+    export AZCOPY_VERSION="10"
+    wget -O azcopy_v$AZCOPY_VERSION.tar.gz https://aka.ms/downloadazcopy-v$AZCOPY_VERSION-linux && tar -xf azcopy_v$AZCOPY_VERSION.tar.gz  --strip-components=1
+    retries=0
+    until [ "$retries" -ge 3 ]
+    do
+        ./azcopy sync $(SSTATE_DIR) --recursive "https://ypcache.blob.core.windows.net/sstate-cache$(SASW_TOKEN)"
+        retries=$((retries+1))
+        echo "Uploading sstate artifacts failed (try #$retries), retrying ..."
+        sleep 10
+    done
   condition: succeededOrFailed()
-
-- ${{ if eq(parameters.buildtype, 'poky') }}:
-  - publish: $(SSTATE_DIR)
-    artifact: $(POKYSSTATE)
-    condition: succeededOrFailed()
-
-- ${{ if ne(parameters.buildtype, 'poky') }}:
-  - publish: $(SSTATE_DIR)
-    artifact: 'SState'
-    condition: succeededOrFailed()
+  displayName: 'Sync sstate'

@@ -1,5 +1,8 @@
 steps:
 - bash: |
+    ###
+    ###  Set branches
+    ###
     if [ ${{ parameters.build_branch }} == "gatesgarth" ]; then
       echo "##vso[task.setvariable variable=buildbranch;]refs/heads/gatesgarth"
       echo "##vso[task.setvariable variable=branchname;]gatesgarth"
@@ -10,6 +13,10 @@ steps:
       echo "##vso[task.setvariable variable=buildbranch;]refs/heads/master"
       echo "##vso[task.setvariable variable=branchname;]master"
     fi
+
+    ###
+    ###  Set kernel
+    ###
     if [ ${{ parameters.kernel }} == "yocto" ]; then
       echo "##vso[task.setvariable variable=kernel;]linux-yocto"
     fi
@@ -19,43 +26,33 @@ steps:
     if [ ${{ parameters.kernel }} == "chromium" ]; then
       echo "##vso[task.setvariable variable=kernel;]linux-chromium"
     fi
+
+    ###
+    ###  Set MACHINE
+    ###
     if [ ${{ parameters.machine }} == "eve" ]; then
       echo "##vso[task.setvariable variable=machine;]eve-chromebook"
-      echo "##vso[task.setvariable variable=pokysstate;]Sstate_eve"
-      echo "##vso[task.setvariable variable=machinesstate;]Sstate_eve"
     fi
     if [ ${{ parameters.machine }} == "x86" ]; then
       echo "##vso[task.setvariable variable=machine;]x86-chromebook"
-      echo "##vso[task.setvariable variable=pokysstate;]Sstate_x86"
-      echo "##vso[task.setvariable variable=machinesstate;]Sstate_x86"
     fi
     if [ ${{ parameters.machine }} == "mediatek8173" ]; then
       echo "##vso[task.setvariable variable=machine;]mediatek8173-chromebook"
-      echo "##vso[task.setvariable variable=pokysstate;]Sstate_mediatek8173"
-      echo "##vso[task.setvariable variable=machinesstate;]Sstate_mediatek8173"
-    fi
-    if [ ${{ parameters.machine }} == "qemux8664" ]; then
-      echo "##vso[task.setvariable variable=machine;]qemux86-64"
-      echo "##vso[task.setvariable variable=pokysstate;]Sstate_qemux8664"
     fi
   displayName: 'Create build configuration'
+
 - bash: |
-    # Since we'll be upgrading later, we need to remove anything we dont want so we dont upgrade it either
-    sudo DEBIAN_FRONTEND=noninteractive apt update
-    sudo DEBIAN_FRONTEND=noninteractive apt purge google-chrome-stable firefox google-cloud-sdk heroku snapd bazel '?name(ghc.*)' \
-    '?name(llvm-8.*)' podman '?name(adoptopenjdk.*)' '?name(dotnet-sdk.*)' '?name(mysql.*)' '?name(mono.*)' '?name(moby.*)' \
-    hhvm ansible '?name(azure-cli.*)' '?name(llvm-9.*)' '?name(llvm-6.*)' '?name(dotnet-runtime.*)' '?name(libllvm8.*)' \
-    '?name(libllvm6.*)' '?name(libllvm8.*)' '?name(libllvm9.*)' '?name(libllvm8.*)' '?name(postgresql.*)' '?name(libclang-common-6.*)' \
-    '?name(libclang-common-8.*)' '?name(libclang-common-9.*)' '?name(libldb.*)' '?name(clang-6.*)' '?name(libicu.*)' \
-    '?name(cabal.*)' '?name(gcc-8.*)' '?name(g++-8-.*)' '?name(gcc-7.*)' '?name(g++-7.*)' '?name(cpp-7.*)' '?name(cpp-8.*)' \
-    '?name(gfortran.*)' '?name(buildah.*)' '?name(ruby2.*)' '?name(skopeo.*)' '?name(openjdk-11-jre-headless.*)' \
-    '?name(vim.*)' '?name(mercurial.*)' \
-    linux-azure-tools-5.4.0-1019 linux-modules-5.4.0-1019-azure linux-azure-headers-5.4.0-1019 > /dev/null
-    # Keep one version of azure stuff installed (newest)
+    ###
+    ###  Since we'll be upgrading later, we need to remove anything we dont want so we dont upgrade it either (legacy)
+    ###
+    
+    # sudo DEBIAN_FRONTEND=noninteractive apt update
+    # sudo DEBIAN_FRONTEND=noninteractive apt purge google-chrome-stable firefox google-cloud-sdk heroku snapd bazel '?name(ghc.*)'
+
     # Remove unneeded dependencies leftover
-    sudo DEBIAN_FRONTEND=noninteractive apt autoremove --purge >/dev/null
-    sudo DEBIAN_FRONTEND=noninteractive apt autoclean >/dev/null
-    sudo DEBIAN_FRONTEND=noninteractive apt clean >/dev/null
+    # sudo DEBIAN_FRONTEND=noninteractive apt autoremove --purge >/dev/null
+    # sudo DEBIAN_FRONTEND=noninteractive apt autoclean >/dev/null
+    # sudo DEBIAN_FRONTEND=noninteractive apt clean >/dev/null
     if [ "${DEBUG_PIPE}" == "1" ]; then
       # Tools to debug space usage
       sudo DEBIAN_FRONTEND=noninteractive apt -yq install durep wajig >/dev/null
@@ -66,10 +63,10 @@ steps:
 
 
 - bash: |
-    # Make sure we still have add-apt-repository
-    # sudo DEBIAN_FRONTEND=noninteractive apt install software-properties-common
-    # sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-    # sudo DEBIAN_FRONTEND=noninteractive apt update
+    ###
+    ###  Install YP dependencies
+    ###
+    sudo DEBIAN_FRONTEND=noninteractive apt update
     sudo DEBIAN_FRONTEND=noninteractive apt upgrade
     # Dependencies from the Yocto Quickstart
     until sudo DEBIAN_FRONTEND=noninteractive apt install gawk wget git-core diffstat unzip texinfo gcc-multilib \
@@ -82,16 +79,6 @@ steps:
     done
   continueOnError: false
   displayName: 'Upgrade and install dependencies'
-
-- bash: |
-    # until sudo DEBIAN_FRONTEND=noninteractive apt install gcc-9 g++-9
-    # do
-    #   echo "Failed updating, trying again..."
-    #   sleep 1
-    # done
-    # sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 --slave /usr/bin/gcov gcov /usr/bin/gcov-9
-    echo "GCC is already up to date"
-  displayName: 'Install Newer GCC'
 
 - bash: |
     if [ "${DEBUG_PIPE}" == "1" ]; then
@@ -118,30 +105,18 @@ steps:
       df -h
       echo "Freeing up disk space"
     fi
-    # There are a lot of tools that we dont need inside the container
-    export TOFREE="/usr/share/dotnet /usr/share/rust /usr/local/go* /usr/lib/jvm \
-    /usr/local/lib/android/  /usr/lib/google-cloud-sdk /opt/* /var/cache/apt/ /var/lib/apt/lists \
-    /usr/lib/firefox /usr/share/gradle* /usr/share/miniconda/ \
-    /usr/share/icons/ /usr/share/man /usr/share/docs \
-    /usr/lib/mono /usr/lib/monodoc /usr/lib/php* /usr/lib/heroku /usr/lib/cgi-bin \
-    /usr/share/apache-maven-3.6.2/ \
-    /home/vsts/agents/*.tgz /home/vsts/agents/2.150.3/ \
-    /home/vsts/agents/2.162.0/ /home/vsts/agents/2.160.1/ /home/vsts/agents/2.152.1/ /home/vsts/agents/2.152.0/ \
-    /usr/share/az_2.3* /usr/share/az_1* \
-    /usr/local/n/ /usr/local/lib/node* /usr/local/share/ /usr/local/bin/ \
-    /usr/libx32/gconv /usr/lib32/gconv /usr/share/swift/ /usr/local/julia1.4.2/ \
-    /home/vsts/agents/2.171.1/ /usr/local/aws-cli/ /usr/local/doc/  /home/linuxbrew/.linuxbrew/ \
-    /usr/share/doc/ /usr/share/vim/ "
+
+    ###
+    ###  Remove files kept to free up even more space
+    ###
+    #### There are a lot of tools that we dont need inside the container
+
+    # Check space or old commits to add to this list
+    # export TOFREE="/usr/share/dotnet /usr/share/rust /usr/local/go* /usr/lib/jvm"
+    
     # This cant be done in parallel
-    for i in ${TOFREE};do sudo rm -rf $i; done;
-    # Create a smaller swapfile to save space
-    # Create a smaller swapfile to save space
-    # sudo swapoff /mnt/swapfile
-    # sudo rm -rf /swapfile
-    # sudo fallocate -l 4G /swapfile
-    # sudo chmod 600 /swapfile
-    # sudo mkswap /swapfile
-    # sudo swapon /swapfile
+    # for i in ${TOFREE};do sudo rm -rf $i; done;
+
     if [ "${DEBUG_PIPE}" == "1" ]; then
       df -h
       du -Sh / 2>/dev/null | sort -rh | head -n 200
@@ -149,6 +124,13 @@ steps:
       durep -td 3
       echo "Creating downloads and sstate directories"
     fi
+  displayName: 'Purge container'
+
+- bash: |
+
+    ###
+    ###  Create local directories
+    ###
     sudo mkdir $(DL_DIR)
     sudo mkdir $(SSTATE_DIR)
     sudo mkdir $(SSTATE_MIRRORS_DIR)
@@ -157,12 +139,15 @@ steps:
     sudo chown vsts:vsts $(DL_DIR)
     sudo chown vsts:vsts $(SSTATE_MIRRORS_DIR)
     sudo chown vsts:vsts ${DEPLOY_ARTIFACTS_DIR}
-  displayName: 'Purge container'
-
-- bash: |
+    
     cd ~/
     echo "Cloning Yocto Project"
     echo "Building Yocto branch: ${BRANCHNAME}"
+
+    ###
+    ###  In case we need local changes
+    ###
+    # git clone https://github.com/aehs29/poky.git -b
     git clone git://git.yoctoproject.org/poky -b ${BRANCHNAME}
     cd poky
     git clone https://git.yoctoproject.org/git/meta-intel -b ${BRANCHNAME}
@@ -175,17 +160,25 @@ steps:
     echo "Creating proper bblayers.conf"
     cd ~/poky
     source oe-init-build-env
-    if [ "${BRANCHNAME}" == "gatesgarth" ]; then
-      echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_GATESGARTH}\"" >> ./conf/local.conf
-    elif [ "${BRANCHNAME}" == "dunfell" ]; then
-      echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_DUNFELL}\"" >> ./conf/local.conf
-    else
-      echo "SSTATE_MIRRORS = \"${SSTATE_MIRRORS_MASTER}\"" >> ./conf/local.conf
-    fi
     echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> ./conf/local.conf
     echo "DL_DIR = \"${DL_DIR}\"" >> ./conf/local.conf
     echo "DISTRO = \"${DISTRO}\"" >> ./conf/local.conf
-    echo "INHERIT += \"rm_work\"" >> ./conf/local.conf
+
+    ###
+    ###  Sstate and Downloads fetching
+    ###
+    echo "AZ_SAS = \"$(SAS_TOKEN)\"" >> ./conf/local.conf
+    echo "SSTATE_MIRRORS=\" file://.* az://ypcache.blob.core.windows.net/sstate-cache/PATH;downloadfilename=PATH \n\"" >> ./conf/local.conf
+    # echo "PREMIRRORS_prepend=\" git://.*/.* az://sstate.blob.core.windows.net/downloads/ \n ftp://.*/.* az://sstate.blob.core.windows.net/downloads/ \n http://.*/.* az://sstate.blob.core.windows.net/downloads/ \n https://.*/.* az://sstate.blob.core.windows.net/downloads/ \n \"" >> ./conf/local.conf
+
+    ###
+    ###  Slower builds but more space
+    ###
+    # echo "INHERIT += \"rm_work\"" >> ./conf/local.conf
+
+    ###
+    ###  Add required layers
+    ###
     bitbake-layers add-layer ../meta-intel
     bitbake-layers add-layer ../meta-openembedded/meta-oe
     bitbake-layers add-layer ../meta-openembedded/meta-python

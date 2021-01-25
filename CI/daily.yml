@@ -1,0 +1,150 @@
+name: $(date:yyyyMMdd)-$(BuildID)
+trigger:
+ - master
+ - dunfell
+
+schedules:
+- cron: "0 8 * * *"
+  displayName: Daily build
+  branches:
+    include:
+    - master
+    - dunfell
+  always: true
+
+variables:
+  - template: templates/variables.yml
+
+stages:
+- stage: eve_yocto
+  displayName: Eve-Yocto
+  dependsOn: []
+  jobs:
+  - job: eve_yocto
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'eve'
+        kernel: 'yocto'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
+
+- stage: eve_intel
+  displayName: Eve-Intel
+  dependsOn: []
+  jobs:
+  - job: eve_intel
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'eve'
+        kernel: 'intel'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
+
+- stage: eve_chromium
+  displayName: Eve-Chromium
+  dependsOn: []
+  jobs:
+  - job: eve_chromium
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'eve'
+        kernel: 'chromium'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
+
+- stage: x86_yocto
+  displayName: X86-Yocto
+  dependsOn: []
+  jobs:
+  - job: x86_yocto
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'x86'
+        kernel: 'yocto'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
+
+- stage: x86_intel
+  displayName: X86-Intel
+  dependsOn: []
+  jobs:
+  - job: x86_intel
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'x86'
+        kernel: 'intel'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
+
+- stage: x86_chromium
+  displayName: X86-Chromium
+  dependsOn: []
+  jobs:
+  - job: x86_chromium
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'x86'
+        kernel: 'chromium'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
+
+- stage: mediatek8173
+  displayName: MEDIATEK8173-Chromium
+  dependsOn: []
+  jobs:
+  - job: mediatek8173_chromium
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'ubuntu-20.04'
+
+    steps:
+    - template: templates/steps_setup.yml
+      parameters:
+        machine: 'mediatek8173'
+        kernel: 'chromium'
+        build_branch: $(Build.SourceBranchName)
+    - template: templates/steps_build.yml
+      parameters:
+        buildtype: 'chromebook'
