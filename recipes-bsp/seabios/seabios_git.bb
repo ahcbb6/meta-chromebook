@@ -8,6 +8,8 @@ SRC_URI = " \
     file://hostcc.patch \
     file://use_python_from_buildsystem.patch \
     file://defconfig \
+    file://0001-ldnoexec-Add-script-to-remove-ET_EXEC-flag-from-inte.patch \
+    file://remove_gnu_property.patch \
 "
 
 # SRCREV = "a18aab36b4b1448112e8446f53d60c5b06ec63b6"

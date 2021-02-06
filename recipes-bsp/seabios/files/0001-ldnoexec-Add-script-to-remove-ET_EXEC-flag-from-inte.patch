@@ -1,0 +1,87 @@
+From 699a4e5d6919cc8eae5342443025ceb6909dc276 Mon Sep 17 00:00:00 2001
+From: Kevin O'Connor <kevin@koconnor.net>
+Date: Wed, 22 Jul 2020 11:31:40 -0400
+Subject: [PATCH] ldnoexec: Add script to remove ET_EXEC flag from intermediate
+ build objects
+
+Add a script to remove the ET_EXEC flag from the 16bit and "32bit
+segmented" intermediate objects.  This avoids build failures with some
+linkers that will not allow linking these objects again.
+
+Signed-off-by: Kevin O'Connor <kevin@koconnor.net>
+---
+ Makefile            |  9 +++++----
+ scripts/ldnoexec.py | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+), 4 deletions(-)
+ create mode 100755 scripts/ldnoexec.py
+
+diff --git a/Makefile b/Makefile
+index c20be15..3d8943e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -127,9 +127,10 @@ $(Q)printf '$(foreach i,$2,#include "$i"\n)' > $3.tmp.c
+ $(Q)$(CC) -I. $1 $(CFLAGSWHOLE) -c $3.tmp.c -o $3
+ endef
+ 
+-%.strip.o: %.o
++%.noexec.o: %.o
+ 	@echo "  Stripping $@"
+-	$(Q)$(STRIP) $< -o $@
++	$(Q)$(STRIP) $< -o $<.strip.o
++	$(Q)$(PYTHON) ./scripts/ldnoexec.py $<.strip.o $@
+ 
+ $(OUT)%.s: %.c
+ 	@echo "  Compiling to assembler $@"
+@@ -185,9 +186,9 @@ $(OUT)rom32seg.o: $(OUT)code32seg.o $(OUT)romlayout32seg.lds
+ 	@echo "  Linking $@"
+ 	$(Q)$(LD) -T $(OUT)romlayout32seg.lds $< -o $@
+ 
+-$(OUT)rom.o: $(OUT)rom16.strip.o $(OUT)rom32seg.strip.o $(OUT)code32flat.o $(OUT)romlayout32flat.lds
++$(OUT)rom.o: $(OUT)rom16.noexec.o $(OUT)rom32seg.noexec.o $(OUT)code32flat.o $(OUT)romlayout32flat.lds
+ 	@echo "  Linking $@"
+-	$(Q)$(LD) -N -T $(OUT)romlayout32flat.lds $(OUT)rom16.strip.o $(OUT)rom32seg.strip.o $(OUT)code32flat.o -o $@
++	$(Q)$(LD) -N -T $(OUT)romlayout32flat.lds $(OUT)rom16.noexec.o $(OUT)rom32seg.noexec.o $(OUT)code32flat.o -o $@
+ 
+ $(OUT)bios.bin.prep: $(OUT)rom.o scripts/checkrom.py
+ 	@echo "  Prepping $@"
+diff --git a/scripts/ldnoexec.py b/scripts/ldnoexec.py
+new file mode 100755
+index 0000000..60bed07
+--- /dev/null
++++ b/scripts/ldnoexec.py
+@@ -0,0 +1,32 @@
++#!/usr/bin/env python
++# Script to remove EXEC flag from an ELF file
++#
++# Copyright (C) 2020  Kevin O'Connor <kevin@koconnor.net>
++#
++# This file may be distributed under the terms of the GNU GPLv3 license.
++import optparse
++
++FLAG_OFFSET = 16
++
++def main():
++    # Parse command-line arguments
++    usage = "%prog <input_file> <output_file>"
++    opts = optparse.OptionParser(usage)
++    options, args = opts.parse_args()
++    if len(args) != 2:
++        opts.error("Incorrect number of arguments")
++    infilename, outfilename = args
++    # Read input
++    f = open(infilename, "rb")
++    srcdata = f.read()
++    f.close()
++    # Update
++    outdata = bytearray(srcdata)
++    outdata[FLAG_OFFSET] = 0x01 # change ET_EXEC to ET_REL
++    # Write output
++    f = open(outfilename, "wb")
++    f.write(outdata)
++    f.close()
++
++if __name__ == '__main__':
++    main()
+-- 
+2.25.1
+

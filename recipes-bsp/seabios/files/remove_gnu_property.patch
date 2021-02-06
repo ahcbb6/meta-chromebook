@@ -1,0 +1,14 @@
+Index: git/Makefile
+===================================================================
+--- git.orig/Makefile
++++ git/Makefile
+@@ -239,6 +239,9 @@ $(OUT)vgarom.o: $(OUT)vgaccode16.o $(OUT
+ 	@echo "  Linking $@"
+ 	$(Q)$(PYTHON) ./scripts/buildversion.py -e "$(EXTRAVERSION)" -t "$(CC);$(AS);$(LD);$(OBJCOPY);$(OBJDUMP);$(STRIP)" $(OUT)autovgaversion.h
+ 	$(Q)$(CC) $(CFLAGS16) -c vgasrc/vgaversion.c -o $(OUT)vgaversion.o
++	$(OBJCOPY) --remove-section .note.gnu.property $(OUT)/vgaentry.o
++	$(OBJCOPY) --remove-section .note.gnu.property $(OUT)/vgaccode16.o
++	$(OBJCOPY) --remove-section .note.gnu.property $(OUT)/vgaversion.o
+ 	$(Q)$(LD) --gc-sections -T $(OUT)vgasrc/vgalayout.lds $(OUT)vgaccode16.o $(OUT)vgaentry.o $(OUT)vgaversion.o -o $@
+ 
+ $(OUT)vgabios.bin.raw: $(OUT)vgarom.o
