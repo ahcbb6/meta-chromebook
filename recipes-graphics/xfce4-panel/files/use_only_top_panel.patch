@@ -1,16 +1,8 @@
-Index: xfce4-panel-4.14.0/migrate/default.xml.in
+Index: xfce4-panel-4.16.1/migrate/default.xml.in
 ===================================================================
---- xfce4-panel-4.14.0.orig/migrate/default.xml.in
-+++ xfce4-panel-4.14.0/migrate/default.xml.in
-@@ -4,7 +4,6 @@
-   <property name="configver" type="int" value="@XFCE4_PANEL_CONFIG_VERSION@"/>
-   <property name="panels" type="array">
-     <value type="int" value="1"/>
--    <value type="int" value="2"/>
-     <property name="panel-1" type="empty">
-       <property name="position" type="string" value="p=6;x=0;y=0"/>
-       <property name="length" type="uint" value="100"/>
-@@ -18,30 +17,12 @@
+--- xfce4-panel-4.16.1.orig/migrate/default.xml.in
++++ xfce4-panel-4.16.1/migrate/default.xml.in
+@@ -19,30 +19,12 @@
          <value type="int" value="4"/>
          <value type="int" value="5"/>
          <value type="int" value="6"/>
@@ -44,7 +36,7 @@ Index: xfce4-panel-4.14.0/migrate/default.xml.in
        </property>
      </property>
    </property>
-@@ -104,5 +85,7 @@
+@@ -100,5 +82,7 @@
      </property>
      <property name="plugin-21" type="string" value="separator"/>
      <property name="plugin-22" type="string" value="directorymenu"/>
