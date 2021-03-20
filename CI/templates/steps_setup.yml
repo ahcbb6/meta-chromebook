@@ -195,6 +195,9 @@ steps:
     echo "SSTATE_MIRRORS=\" file://.* az://ypcache.blob.core.windows.net/sstate-cache/PATH;downloadfilename=PATH \n\"" >> ./conf/local.conf
     # echo "PREMIRRORS_prepend=\" git://.*/.* az://sstate.blob.core.windows.net/downloads/ \n ftp://.*/.* az://sstate.blob.core.windows.net/downloads/ \n http://.*/.* az://sstate.blob.core.windows.net/downloads/ \n https://.*/.* az://sstate.blob.core.windows.net/downloads/ \n \"" >> ./conf/local.conf
 
+    # Override fetch command to increase timeout
+    echo "FETCHCMD_wget=\"/usr/bin/env wget -d --retry-connrefused --waitretry=10 -t 30 -T 60 --passive-ftp\"" >> ./conf/local.conf
+
     ###
     ###  Slower builds but more space
     ###
