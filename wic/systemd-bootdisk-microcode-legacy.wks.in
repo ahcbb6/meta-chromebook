@@ -2,7 +2,7 @@
 # Note the biosplusefi WIC plugin
 # Based on OE-core's systemd-bootdisk.wks file.
 
-part /boot --source bootimg-biosplusefi --sourceparams="loader=systemd-boot,initrd=microcode.cpio" --ondisk sda --label msdos --active --align 1024 --use-uuid
+part /boot --source bootimg-biosplusefi --sourceparams="loader=systemd-boot,initrd=microcode.cpio" --ondisk sda --size 100 --label msdos --active --align 1024 --use-uuid
 
 part / --source rootfs --ondisk sda --fstype=ext4 --label platform --align 1024 --use-uuid
 
