@@ -1,8 +1,8 @@
-Index: libxfce4ui-4.14.1/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
+Index: libxfce4ui-4.16.0/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
 ===================================================================
---- libxfce4ui-4.14.1.orig/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
-+++ libxfce4ui-4.14.1/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
-@@ -3,22 +3,22 @@
+--- libxfce4ui-4.16.0.orig/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
++++ libxfce4ui-4.16.0/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
+@@ -3,17 +3,16 @@
  <channel name="xfce4-keyboard-shortcuts" version="1.0">
    <property name="commands" type="empty">
      <property name="default" type="empty">
@@ -14,28 +14,30 @@ Index: libxfce4ui-4.14.1/libxfce4kbd-private/xfce4-keyboard-shortcuts.xml
 +      <property name="Super_L" type="string" value="xfce4-appfinder">
          <property name="startup-notify" type="bool" value="true"/>
        </property>
-       <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xflock4"/>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;Delete" type="string" value="xfce4-session-logout"/>
        <property name="&lt;Primary&gt;&lt;Alt&gt;l" type="string" value="xflock4"/>
 -      <property name="&lt;Primary&gt;&lt;Alt&gt;t" type="string" value="exo-open --launch TerminalEmulator"/>
 -      <property name="XF86Display" type="string" value="xfce4-display-settings --minimal"/>
--      <property name="&lt;Super&gt;p" type="string" value="xfce4-display-settings --minimal"/>
 +      <property name="Terminal" type="string" value="exo-open --launch TerminalEmulator"/>
 +      <property name="Display" type="string" value="xfce4-display-settings --minimal"/>
+       <property name="&lt;Super&gt;p" type="string" value="xfce4-display-settings --minimal"/>
        <property name="&lt;Primary&gt;Escape" type="string" value="xfdesktop --menu"/>
        <property name="XF86WWW" type="string" value="exo-open --launch WebBrowser"/>
-       <property name="XF86Mail" type="string" value="exo-open --launch MailReader"/>
-       <property name="Print" type="string" value="xfce4-screenshooter"/>
+@@ -26,6 +25,8 @@
+       <property name="&lt;Primary&gt;&lt;Alt&gt;f" type="string" value="thunar"/>
+       <property name="&lt;Primary&gt;&lt;Alt&gt;Escape" type="string" value="xkill"/>
+       <property name="&lt;Primary&gt;&lt;Shift&gt;Escape" type="string" value="xfce4-taskmanager"/>
 +      <property name="MonBrightnessDown" type="string" value="chromebook-kbd-brightness down"/>
-+      <property name="MonBrightnessUp" type="string" value="chromebook-kbd-brightness up"/>
-     </property>
-   </property>
-   <property name="xfwm4" type="empty">
-@@ -75,6 +75,8 @@
++      <property name="MonBrightnessUp" type="string" value="chromebook-kbd-brightness up"/>  
+       <property name="&lt;Super&gt;r" type="string" value="xfce4-appfinder -c">
+         <property name="startup-notify" type="bool" value="true"/>
+       </property>
+@@ -85,6 +86,8 @@
        <property name="&lt;Primary&gt;F10" type="string" value="workspace_10_key"/>
        <property name="&lt;Primary&gt;F11" type="string" value="workspace_11_key"/>
        <property name="&lt;Primary&gt;F12" type="string" value="workspace_12_key"/>
 +      <property name="&lt;Alt&gt;Left" type="string" value="tile_left_key"/>
 +      <property name="&lt;Alt&gt;Right" type="string" value="tile_right_key"/>
-     </property>
-   </property>
-   <property name="providers" type="array">
+       <property name="<Super>KP_Left" type="string" value="tile_left_key"/>
+       <property name="<Super>KP_Right" type="string" value="tile_right_key"/>
+       <property name="<Super>KP_Up" type="string" value="tile_down_key"/>
