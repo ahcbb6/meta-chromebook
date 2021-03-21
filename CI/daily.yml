@@ -13,9 +13,6 @@ schedules:
     - master-test
   always: true
 
-variables:
-  - template: templates/variables.yml
-
 stages:
 - stage: eve_yocto
   displayName: Eve-Yocto
