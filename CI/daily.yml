@@ -30,8 +30,6 @@ stages:
         kernel: 'yocto'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'
 
 - stage: eve_intel
   displayName: Eve-Intel
@@ -49,8 +47,6 @@ stages:
         kernel: 'intel'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'
 
 - stage: eve_chromium
   displayName: Eve-Chromium
@@ -68,8 +64,7 @@ stages:
         kernel: 'chromium'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'
+
 
 - stage: x86_yocto
   displayName: X86-Yocto
@@ -87,8 +82,6 @@ stages:
         kernel: 'yocto'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'
 
 - stage: x86_intel
   displayName: X86-Intel
@@ -106,8 +99,6 @@ stages:
         kernel: 'intel'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'
 
 - stage: x86_chromium
   displayName: X86-Chromium
@@ -125,8 +116,6 @@ stages:
         kernel: 'chromium'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'
 
 - stage: mediatek8173
   displayName: MEDIATEK8173-Chromium
@@ -144,5 +133,3 @@ stages:
         kernel: 'chromium'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
-      parameters:
-        buildtype: 'chromebook'

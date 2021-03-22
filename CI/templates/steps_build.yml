@@ -2,43 +2,28 @@ parameters:
   build_branch: 'master'
   machine: ''
   kernel: ''
-  buildtype: ''
 
 steps:
-- ${{ if eq(parameters.buildtype, 'chromebook') }}:
-  - bash: |
-      echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL}"
-      cd ~/poky
-      source oe-init-build-env
-      echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
-      echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL}\"" >> ./conf/local.conf
-      echo "${EXTRA_LOCALCONF}" >> ./conf/local.conf
-      echo "Building with the following configuration:"
-      tail -n 10 conf/local.conf
-      if [ -z $(BBTARGET) ]; then
-        bitbake chromebook-image-minimal
-      else
-        bitbake $(BBTARGET)
-      fi
-    condition: succeededOrFailed()
-    displayName: 'Build minimal chromebook image for $(MACHINE) - $(KERNEL)'
-
-
 - bash: |
-    df -h
+    echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL}"
+    cd ~/poky
+    source oe-init-build-env
+    echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+    echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL}\"" >> ./conf/local.conf
+    echo "${EXTRA_LOCALCONF}" >> ./conf/local.conf
+    echo "Building with the following configuration:"
+    tail -n 10 conf/local.conf
+    if [ -z $(BBTARGET) ]; then
+    bitbake chromebook-image-minimal
+    else
+    bitbake $(BBTARGET)
+    fi
   condition: succeededOrFailed()
-  displayName: 'Check space after build'
+  displayName: 'Build minimal chromebook image for ${MACHINE} - ${KERNEL}'
 
 - bash: |
-    export AZCOPY_VERSION="10"
-    wget -O azcopy_v$AZCOPY_VERSION.tar.gz https://aka.ms/downloadazcopy-v$AZCOPY_VERSION-linux && tar -xf azcopy_v$AZCOPY_VERSION.tar.gz  --strip-components=1
-    retries=0
-    until [ "$retries" -ge 3 ]
-    do
-        ./azcopy sync $(SSTATE_DIR) --recursive "https://ypcache.blob.core.windows.net/sstate-cache$(SASW_TOKEN)"
-        retries=$((retries+1))
-        echo "Uploading sstate artifacts failed (try #$retries), retrying ..."
-        sleep 10
-    done
+    source azp-scripts/azp_setup.sh
+    check_freespace
+    SASW_TOKEN="$(SASW_TOKEN)" sync_sstate
   condition: succeededOrFailed()
   displayName: 'Sync sstate'

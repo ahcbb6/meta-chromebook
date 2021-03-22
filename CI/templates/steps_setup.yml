@@ -30,14 +30,13 @@ steps:
   displayName: 'Setup globals'
 - bash: |
     git clone https://www.github.com/aehs29/azp-scripts/
-    echo $PWD
     chmod +x azp-scripts/azp_setup.sh
     source azp-scripts/azp_setup.sh
-    check_freespace
-    free_space_packages
+    # check_freespace
+    # free_space_packages
     setup_yp_deps
-    check_freespace
-    analyze_storage
+    # check_freespace
+    # analyze_storage
     # cleanup_leftover_deps
     # purge_space
     create_local_dirs
