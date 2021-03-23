@@ -30,8 +30,8 @@ steps:
   displayName: 'Setup globals'
 - bash: |
     git clone https://www.github.com/aehs29/azp-scripts/
-    chmod +x azp-scripts/azp_setup.sh
-    source azp-scripts/azp_setup.sh
+    chmod +x azp-scripts/azp-helpers.sh
+    source azp-scripts/azp-helpers.sh
     # check_freespace
     # free_space_packages
     setup_yp_deps
@@ -43,13 +43,13 @@ steps:
   displayName: 'Setup with helper script'
 
 - bash: |    
-    source azp-scripts/azp_setup.sh
+    source azp-scripts/azp-helpers.sh
     BRANCH=${BUILDBRANCH} clone_layers poky intel oe
   continueOnError: false
   displayName: 'Clone Repositories'
 
 - bash: |
-    source azp-scripts/azp_setup.sh
+    source azp-scripts/azp-helpers.sh
     DISTRO="chronos" AZ_SAS="$(SAS_TOKEN)" RMWORK="0" localconf
     SELF="$(Build.SourcesDirectory)" add_layers intel oe python networking
   continueOnError: false

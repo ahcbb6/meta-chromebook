@@ -22,7 +22,7 @@ steps:
   displayName: 'Build minimal chromebook image for ${MACHINE} - ${KERNEL}'
 
 - bash: |
-    source azp-scripts/azp_setup.sh
+    source azp-scripts/azp-helpers.sh
     check_freespace
     SASW_TOKEN="$(SASW_TOKEN)" sync_sstate
   condition: succeededOrFailed()
