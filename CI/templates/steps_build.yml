@@ -19,7 +19,7 @@ steps:
     bitbake $(BBTARGET)
     fi
   condition: succeededOrFailed()
-  displayName: 'Build minimal chromebook image for ${MACHINE} - ${KERNEL}'
+  displayName: 'Build minimal chromebook image'
 
 - bash: |
     source azp-scripts/azp-helpers.sh

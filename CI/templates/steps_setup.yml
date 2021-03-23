@@ -1,33 +1,44 @@
 steps:
 - bash: |
-    # echo "##vso[task.setvariable variable=buildbranch;]${{ parameters.build_branch }}"
-    # echo "##vso[task.setvariable variable=kernel;]${{ parameters.kernel }}"
-    # echo "##vso[task.setvariable variable=machine;]${{ parameters.machine }}"
-        ###
+    ###
     ###  Set kernel
     ###
-    if [ ${{ parameters.kernel }} == "yocto" ]; then
-      echo "##vso[task.setvariable variable=kernel;]linux-yocto"
-    fi
-    if [ ${{ parameters.kernel }} == "intel" ]; then
-      echo "##vso[task.setvariable variable=kernel;]linux-intel"
-    fi
-    if [ ${{ parameters.kernel }} == "chromium" ]; then
-      echo "##vso[task.setvariable variable=kernel;]linux-chromium"
-    fi
+    case ${{ parameters.kernel }} in
+        yocto )
+            echo "##vso[task.setvariable variable=kernel;]linux-yocto"
+            ;;
+        intel )
+            echo "##vso[task.setvariable variable=kernel;]linux-intel"
+            ;;
+        chromium )
+            echo "##vso[task.setvariable variable=kernel;]linux-chromium"
+            ;;
+        *)
+            echo "Unknown kernel requested"
+            exit 1
+            ;;
+    esac
+
     ###
     ###  Set MACHINE
     ###
-    if [ ${{ parameters.machine }} == "eve" ]; then
-      echo "##vso[task.setvariable variable=machine;]eve-chromebook"
-    fi
-    if [ ${{ parameters.machine }} == "x86" ]; then
-      echo "##vso[task.setvariable variable=machine;]x86-chromebook"
-    fi
-    if [ ${{ parameters.machine }} == "mediatek8173" ]; then
-      echo "##vso[task.setvariable variable=machine;]mediatek8173-chromebook"
-    fi
-  displayName: 'Setup globals'
+    case ${{ parameters.machine }} in
+        eve )
+            echo "##vso[task.setvariable variable=machine;]eve-chromebook"
+            ;;
+        x86 )
+            echo "##vso[task.setvariable variable=machine;]x86-chromebook"
+            ;;
+        mediatek8173 )
+            echo "##vso[task.setvariable variable=machine;]mediatek8173-chromebook"
+            ;;
+        *)
+            echo "Unknown MACHINE requested"
+            exit 1
+            ;;
+    esac
+  displayName: 'Set global variables'
+
 - bash: |
     git clone https://www.github.com/aehs29/azp-scripts/
     chmod +x azp-scripts/azp-helpers.sh
@@ -40,9 +51,9 @@ steps:
     # cleanup_leftover_deps
     # purge_space
     create_local_dirs
-  displayName: 'Setup with helper script'
+  displayName: 'Setup container'
 
-- bash: |    
+- bash: |
     source azp-scripts/azp-helpers.sh
     BRANCH=${BUILDBRANCH} clone_layers poky intel oe
   continueOnError: false
