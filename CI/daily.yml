@@ -13,11 +13,11 @@ schedules:
   always: true
 
 stages:
-- stage: eve_yocto
-  displayName: Eve-Yocto
+- stage: eve
+  displayName: Eve
   dependsOn: []
   jobs:
-  - job: eve_yocto
+  - job: eve
     timeoutInMinutes: 0
     pool:
       vmImage: 'ubuntu-20.04'
@@ -26,50 +26,14 @@ stages:
     - template: templates/steps_setup.yml
       parameters:
         machine: 'eve'
-        kernel: 'yocto'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
 
-- stage: eve_intel
-  displayName: Eve-Intel
+- stage: x86
+  displayName: X86
   dependsOn: []
   jobs:
-  - job: eve_intel
-    timeoutInMinutes: 0
-    pool:
-      vmImage: 'ubuntu-20.04'
-
-    steps:
-    - template: templates/steps_setup.yml
-      parameters:
-        machine: 'eve'
-        kernel: 'intel'
-        build_branch: $(Build.SourceBranchName)
-    - template: templates/steps_build.yml
-
-- stage: eve_chromium
-  displayName: Eve-Chromium
-  dependsOn: []
-  jobs:
-  - job: eve_chromium
-    timeoutInMinutes: 0
-    pool:
-      vmImage: 'ubuntu-20.04'
-
-    steps:
-    - template: templates/steps_setup.yml
-      parameters:
-        machine: 'eve'
-        kernel: 'chromium'
-        build_branch: $(Build.SourceBranchName)
-    - template: templates/steps_build.yml
-
-
-- stage: x86_yocto
-  displayName: X86-Yocto
-  dependsOn: []
-  jobs:
-  - job: x86_yocto
+  - job: x86
     timeoutInMinutes: 0
     pool:
       vmImage: 'ubuntu-20.04'
@@ -78,49 +42,14 @@ stages:
     - template: templates/steps_setup.yml
       parameters:
         machine: 'x86'
-        kernel: 'yocto'
-        build_branch: $(Build.SourceBranchName)
-    - template: templates/steps_build.yml
-
-- stage: x86_intel
-  displayName: X86-Intel
-  dependsOn: []
-  jobs:
-  - job: x86_intel
-    timeoutInMinutes: 0
-    pool:
-      vmImage: 'ubuntu-20.04'
-
-    steps:
-    - template: templates/steps_setup.yml
-      parameters:
-        machine: 'x86'
-        kernel: 'intel'
-        build_branch: $(Build.SourceBranchName)
-    - template: templates/steps_build.yml
-
-- stage: x86_chromium
-  displayName: X86-Chromium
-  dependsOn: []
-  jobs:
-  - job: x86_chromium
-    timeoutInMinutes: 0
-    pool:
-      vmImage: 'ubuntu-20.04'
-
-    steps:
-    - template: templates/steps_setup.yml
-      parameters:
-        machine: 'x86'
-        kernel: 'chromium'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml
 
 - stage: mediatek8173
-  displayName: MEDIATEK8173-Chromium
+  displayName: MEDIATEK8173
   dependsOn: []
   jobs:
-  - job: mediatek8173_chromium
+  - job: mediatek8173
     timeoutInMinutes: 0
     pool:
       vmImage: 'ubuntu-20.04'
@@ -129,6 +58,5 @@ stages:
     - template: templates/steps_setup.yml
       parameters:
         machine: 'mediatek8173'
-        kernel: 'chromium'
         build_branch: $(Build.SourceBranchName)
     - template: templates/steps_build.yml

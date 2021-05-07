@@ -1,23 +1,25 @@
 parameters:
   build_branch: 'master'
   machine: ''
-  kernel: ''
 
 steps:
 - bash: |
-    echo "Building minimal chromebook image for ${MACHINE} with kernel ${KERNEL}"
-    cd ~/poky
-    source oe-init-build-env
-    echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
-    echo "PREFERRED_PROVIDER_virtual/kernel = \"${KERNEL}\"" >> ./conf/local.conf
-    echo "${EXTRA_LOCALCONF}" >> ./conf/local.conf
-    echo "Building with the following configuration:"
-    tail -n 10 conf/local.conf
-    if [ -z $(BBTARGET) ]; then
-    bitbake chromebook-image-minimal
-    else
-    bitbake $(BBTARGET)
-    fi
+    for k in ${KERNELS};
+    do
+        echo "Building minimal chromebook image for ${MACHINE} with kernel ${k}"
+        cd ~/poky
+        source oe-init-build-env
+        echo "MACHINE = \"${MACHINE}\"" >> ./conf/local.conf
+        echo "PREFERRED_PROVIDER_virtual/kernel = \"${k}\"" >> ./conf/local.conf
+        echo "${EXTRA_LOCALCONF}" >> ./conf/local.conf
+        echo "Building with the following configuration:"
+        tail -n 10 conf/local.conf
+        if [ -z $(BBTARGET) ]; then
+            bitbake chromebook-image-minimal
+        else
+            bitbake $(BBTARGET)
+        fi
+    done;
   condition: succeededOrFailed()
   displayName: 'Build minimal chromebook image'
 

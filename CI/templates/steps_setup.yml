@@ -1,36 +1,20 @@
 steps:
 - bash: |
     ###
-    ###  Set kernel
-    ###
-    case ${{ parameters.kernel }} in
-        yocto )
-            echo "##vso[task.setvariable variable=kernel;]linux-yocto"
-            ;;
-        intel )
-            echo "##vso[task.setvariable variable=kernel;]linux-intel"
-            ;;
-        chromium )
-            echo "##vso[task.setvariable variable=kernel;]linux-chromium"
-            ;;
-        *)
-            echo "Unknown kernel requested"
-            exit 1
-            ;;
-    esac
-
-    ###
-    ###  Set MACHINE
+    ###  Set MACHINE and kernels
     ###
     case ${{ parameters.machine }} in
         eve )
             echo "##vso[task.setvariable variable=machine;]eve-chromebook"
+            echo "##vso[task.setvariable variable=kernels;]linux-yocto linux-intel linux-chromium"
             ;;
         x86 )
             echo "##vso[task.setvariable variable=machine;]x86-chromebook"
+            echo "##vso[task.setvariable variable=kernels;]linux-yocto linux-intel linux-chromium"
             ;;
         mediatek8173 )
             echo "##vso[task.setvariable variable=machine;]mediatek8173-chromebook"
+            echo "##vso[task.setvariable variable=kernels;]linux-chromium"
             ;;
         *)
             echo "Unknown MACHINE requested"
