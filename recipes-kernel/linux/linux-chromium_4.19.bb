@@ -19,3 +19,6 @@ SRC_URI_append = " file://chromium-x86-64-defconfig-R77-4.19-no-unset.cfg \
     file://extra_pixelbook-linux.cfg \
     file://extra_pixelbook-chromium.cfg \
 "
+
+# Silence kernel compilation warnings since this is an old kernel
+KERNEL_CC_append = " -Wno-array-parameter -Wno-stringop-overread"
