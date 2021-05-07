@@ -14,7 +14,7 @@ IMAGE_INSTALL_append = " dhcpcd iw iproute2 wpa-supplicant ${CHROMEBOOK_NETMANAG
 IMAGE_INSTALL_append = " pciutils util-linux-lsblk util-linux-libuuid util-linux-lscpu util-linux-sfdisk util-linux-uuidd util-linux-uuidgen util-linux-uuidparse e2fsprogs-resize2fs coreutils "
 
 IMAGE_INSTALL_append_eve-chromebook = " seabios mrchromebox-fw-utils"
-IMAGE_INSTALL_append_x86-chromebook = " seabios mrchromebox-fw-utils"
+IMAGE_INSTALL_append_x86-chromebook = " seabios mrchromebox-fw-utils ectool-chromium"
 
 # Add more locales?
 IMAGE_LINGUAS = "en-us"
