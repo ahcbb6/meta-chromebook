@@ -38,12 +38,13 @@ do_compile_prepend(){
     # Allow GCC9 to build
     cp ${S}/include/linux/compiler-gcc5.h ${S}/include/linux/compiler-gcc9.h
     cp ${S}/include/linux/compiler-gcc5.h ${S}/include/linux/compiler-gcc10.h
+    cp ${S}/include/linux/compiler-gcc5.h ${S}/include/linux/compiler-gcc11.h
     # Fix race condition on dtbs bby creating the dtbs first
     oe_runmake CC="${CC} -Wno-attributes" dtbs
 }
 
 # Silence kernel compilation warnings since this is an old kernel
-KERNEL_CC_append = " -Wno-attributes -Wno-format-truncation -Wno-stringop-overflow -Wno-attribute-alias -Wno-array-bounds -Wno-unused-const-variable -Wno-packed-not-aligned -Wno-address-of-packed-member -Wno-duplicate-decl-specifier -Wno-sizeof-pointer-memaccess -Wno-int-in-bool-context -Wno-discarded-array-qualifiers -Wno-format-overflow -Wno-tautological-compare -Wno-missing-attributes -Wno-stringop-truncation -Wno-nonnull -Wno-logical-not-parentheses -Wno-bool-operation -Wno-implicit-function-declaration -Wno-misleading-indentation -Wno-switch -Wno-unused-variable -Wno-builtin-declaration-mismatch -Wno-restrict"
+KERNEL_CC_append = " -Wno-attributes -Wno-format-truncation -Wno-stringop-overflow -Wno-attribute-alias -Wno-array-bounds -Wno-unused-const-variable -Wno-packed-not-aligned -Wno-address-of-packed-member -Wno-duplicate-decl-specifier -Wno-sizeof-pointer-memaccess -Wno-int-in-bool-context -Wno-discarded-array-qualifiers -Wno-format-overflow -Wno-tautological-compare -Wno-missing-attributes -Wno-stringop-truncation -Wno-nonnull -Wno-logical-not-parentheses -Wno-bool-operation -Wno-implicit-function-declaration -Wno-misleading-indentation -Wno-switch -Wno-unused-variable -Wno-builtin-declaration-mismatch -Wno-restrict -Wno-stringop-overread"
 
 # Device tree blobs for mt8173
 KERNEL_DEVICETREE = " \
