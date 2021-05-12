@@ -19,6 +19,21 @@ steps:
         else
             bitbake $(BBTARGET)
         fi
+
+        # If were running out of time sync the sstate
+        echo "\n\n"
+        echo "Checking system's uptime"
+        uptime=`cat /proc/uptime | cut -d ' ' -f 1`
+        uptime=${uptime%.*}
+        echo "Current uptime: $uptime"
+        if [ $uptime -gt 14400 ]; then
+            echo "Uptime greater than 4 hrs, proceeding to sync shared state"
+            # Sync sstate after building the target to save up time
+            # This path is hardcoded inside the container
+            source ~/work/1/s/azp-scripts/azp-helpers.sh
+            check_freespace
+            SASW_TOKEN="$(SASW_TOKEN)" sync_sstate
+        fi
     done;
   condition: succeededOrFailed()
   displayName: 'Build minimal chromebook image'
