@@ -20,8 +20,12 @@ steps:
             bitbake $(BBTARGET)
         fi
 
+        # The pipeline will only detect an error if the last command failed
+        eCode=$?
+
         # If were running out of time sync the sstate
-        echo "\n\n"
+        echo ""
+        echo ""
         echo "Checking system's uptime"
         uptime=`cat /proc/uptime | cut -d ' ' -f 1`
         uptime=${uptime%.*}
@@ -33,6 +37,12 @@ steps:
             source ~/work/1/s/azp-scripts/azp-helpers.sh
             check_freespace
             SASW_TOKEN="$(SASW_TOKEN)" sync_sstate
+        fi
+
+        # Exit after syncing sstate if we had an error
+        if [ $eCode -ne 0 ]; then
+            echo "Error while building image"
+            exit $retVal
         fi
     done;
   condition: succeededOrFailed()
