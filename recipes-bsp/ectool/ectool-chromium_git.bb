@@ -1,5 +1,5 @@
 DESCRIPTION = "Embedded Controller software includes a lightweight, multitasking OS with modules for power sequencing, keyboard control, thermal control, battery charging, and verified boot."
-LICENSE = "BSD-3"
+LICENSE = "BSD-3-Clause"
 HOMEPAGE = "http://flashrom.org"
 
 LIC_FILES_CHKSUM = "file://LICENSE;md5=562c740877935f40b262db8af30bca36"
