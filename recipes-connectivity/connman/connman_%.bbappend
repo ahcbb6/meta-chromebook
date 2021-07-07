@@ -1,4 +1,4 @@
-PACKAGECONFIG[openconnect] = "--enable-openconnect --with-openconnect=${sbindir}/openconnect,--disable-openconnect,,openconnect"
+PACKAGECONFIG[openconnect] = "--enable-openconnect --with-openconnect=${sbindir}/openconnect,--disable-openconnect,openconnect,openconnect"
 
 # Enable VPN support
 PACKAGECONFIG_append = " openvpn vpnc l2tp pptp openconnect"
