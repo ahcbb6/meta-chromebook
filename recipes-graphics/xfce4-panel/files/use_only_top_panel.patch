@@ -1,8 +1,8 @@
-Index: xfce4-panel-4.16.1/migrate/default.xml.in
+Index: xfce4-panel-4.16.3/migrate/default.xml.in
 ===================================================================
---- xfce4-panel-4.16.1.orig/migrate/default.xml.in
-+++ xfce4-panel-4.16.1/migrate/default.xml.in
-@@ -19,30 +19,12 @@
+--- xfce4-panel-4.16.3.orig/migrate/default.xml.in
++++ xfce4-panel-4.16.3/migrate/default.xml.in
+@@ -19,31 +19,13 @@
          <value type="int" value="4"/>
          <value type="int" value="5"/>
          <value type="int" value="6"/>
@@ -15,12 +15,13 @@ Index: xfce4-panel-4.16.1/migrate/default.xml.in
 -        <value type="int" value="12"/>
 +        <value type="int" value="24"/>
          <value type="int" value="13"/>
--        <value type="int" value="14"/>
+         <value type="int" value="14"/>
 -      </property>
 -    </property>
 -    <property name="panel-2" type="empty">
 -      <property name="autohide-behavior" type="uint" value="1"/>
 -      <property name="position" type="string" value="p=10;x=0;y=0"/>
+-      <property name="length" type="uint" value="1"/>
 -      <property name="position-locked" type="bool" value="true"/>
 -      <property name="size" type="uint" value="48"/>
 -      <property name="plugin-ids" type="array">
@@ -36,7 +37,7 @@ Index: xfce4-panel-4.16.1/migrate/default.xml.in
        </property>
      </property>
    </property>
-@@ -100,5 +82,7 @@
+@@ -101,5 +83,7 @@
      </property>
      <property name="plugin-21" type="string" value="separator"/>
      <property name="plugin-22" type="string" value="directorymenu"/>
